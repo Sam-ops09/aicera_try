@@ -75,8 +75,8 @@ export default function Footer() {
 								</p>
 								<Link
 									className="text-[30px] font-semibold text-[#0D1B2A] leading-tight tracking-tight"
-									href="mailTo:hello@supadupa.nl">
-									hello@supadupa.nl
+									href="mailTo:hello@AICERA">
+									hello@AICERA
 								</Link>
 							</div>
 							<div className="flex flex-col">
@@ -86,7 +86,7 @@ export default function Footer() {
 								<Link
 									className="text-[30px] font-semibold text-[#0D1B2A] leading-tight tracking-tight"
 									href="/">
-									@SupaDupaNL
+									@AICERA
 								</Link>
 							</div>
 						</div>
