@@ -18,7 +18,7 @@ export default function Journey() {
 		<motion.div
 			id="our-ambition"
 			aria-label={t("journeyTitle") || "Our Ambition"}
-			className="w-full h-[70%] xm:h-fit sm:h-fit flex items-center justify-center rounded-[30px] py-10 bg-[#FFD7EF] transition-all duration-300 ease-linear mb-20"
+			className="w-full h-[70%] xm:h-fit sm:h-fit flex items-center justify-center rounded-[30px] py-10 bg-[#1B386F] transition-all duration-300 ease-linear mb-20"
 			style={{ scale: scaleSmooth }}
 			ref={container}>
 			<div className="w-[90%] h-full flex items-center justify-center sm:w-full xm:w-full md:w-full px-5 sm:pb-20 xm:pb-20">

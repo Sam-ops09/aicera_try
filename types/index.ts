@@ -36,3 +36,9 @@ export type TWordProps = {
    progress: MotionValue<number>;
    range: number[];
 };
+
+export type TRoundedProps = {
+   children: React.ReactNode;
+   className?: string;
+   backgroundColor: string;
+};

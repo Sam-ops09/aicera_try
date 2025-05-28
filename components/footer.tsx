@@ -15,27 +15,27 @@ export default function Footer() {
 				<Marquee
 					titile1="Get in touch"
 					titile2="Get in touch"
-					className="text-[#ffeb69]"
+					className="text-[#0D1B2A]"
 				/>
 				<div className="w-[80%] flex flex-col gap-10 xm:w-full sm:w-full">
 					<div>
-						<h1 className="text-[60px] xm:text-[40px] sm:text-[40px] xm:leading-[40px] sm:leading-[40px] text-[#ffeb69] font-bold leading-[62px] tracking-tight text-center xm:text-left sm:text-left">
+						<h1 className="text-[60px] xm:text-[40px] sm:text-[40px] xm:leading-[40px] sm:leading-[40px] text-[#0D1B2A] font-bold leading-[62px] tracking-tight text-center xm:text-left sm:text-left">
 							{t("footerHeading1")}
 						</h1>
 					</div>
 					<div>
-						<p className="text-[25px] text-[#ffeb69] leading-normal tracking-tight text-center xm:text-left sm:text-left">
+						<p className="text-[25px] text-[#0D1B2A] leading-normal tracking-tight text-center xm:text-left sm:text-left">
 							{t("footerHeading2")}
 						</p>
 					</div>
 					<div className="flex items-center justify-center">
-						<button className="group flex gap-2 items-center text-[17px] font-semibold capitalize text-[#260A2F] bg-secondary rounded-full leading-tight tracking-tight px-4 py-3">
+						<button className="group flex gap-2 items-center text-[17px] font-semibold capitalize text-[#E1E2E1] bg-[#0D1B2A] rounded-full leading-tight tracking-tight px-4 py-3">
 							<Image
 								src={blackCircle}
 								alt="blackCircle"
 								width={30}
 								height={30}
-								className="group-hover:rotate-[60deg] transition-all duration-300 ease-linear"
+								className="group-hover:rotate-[90deg] transition-all duration-300 ease-linear"
 							/>
 							<TextHover
 								titile1={t("footerBtn")}
@@ -48,43 +48,43 @@ export default function Footer() {
 					<div className="w-1/2 xm:w-full sm:w-full flex gap-5 justify-between xm:flex-col sm:flex-col">
 						<div className="flex flex-col gap-5">
 							<div className="flex flex-col">
-								<p className="text-[16px] text-[#9FE870] leading-tight tracking-tight">
+								<p className="text-[16px] text-[#0D1B2A] leading-tight tracking-tight">
 									Phone
 								</p>
 								<Link
-									className="text-[30px] font-semibold text-[#9FE870] leading-tight tracking-tight"
+									className="text-[30px] font-semibold text-[#0D1B2A] leading-tight tracking-tight"
 									href="tell:+31 53 234 0188">
 									+31 53 234 0188
 								</Link>
 							</div>
 							<div className="flex flex-col">
-								<p className="text-[16px] text-[#9FE870] leading-tight tracking-tight">
+								<p className="text-[16px] text-[#0D1B2A] leading-tight tracking-tight">
 									linkedin
 								</p>
 								<Link
-									className="text-[30px] font-semibold text-[#9FE870] leading-tight tracking-tight"
+									className="text-[30px] font-semibold text-[#0D1B2A] leading-tight tracking-tight"
 									href="/">
-									@SupaDupaNL
+									@AICERA
 								</Link>
 							</div>
 						</div>
 						<div className="flex flex-col gap-5">
 							<div className="flex flex-col">
-								<p className="text-[16px] text-[#9FE870] leading-tight tracking-tight">
+								<p className="text-[16px] text-[#0D1B2A] leading-tight tracking-tight">
 									E-mail
 								</p>
 								<Link
-									className="text-[30px] font-semibold text-[#9FE870] leading-tight tracking-tight"
+									className="text-[30px] font-semibold text-[#0D1B2A] leading-tight tracking-tight"
 									href="mailTo:hello@supadupa.nl">
 									hello@supadupa.nl
 								</Link>
 							</div>
 							<div className="flex flex-col">
-								<p className="text-[16px] text-[#9FE870] leading-tight tracking-tight">
+								<p className="text-[16px] text-[#0D1B2A] leading-tight tracking-tight">
 									Instagram
 								</p>
 								<Link
-									className="text-[30px] font-semibold text-[#9FE870] leading-tight tracking-tight"
+									className="text-[30px] font-semibold text-[#0D1B2A] leading-tight tracking-tight"
 									href="/">
 									@SupaDupaNL
 								</Link>
@@ -94,11 +94,11 @@ export default function Footer() {
 					<div className="w-[30%] xm:w-full sm:w-full">
 						<div className="flex flex-col gap-10">
 							<div className="flex flex-col">
-								<p className="text-[16px] text-[#9FE870] leading-tight tracking-tight">
+								<p className="text-[16px] text-[#0D1B2A] leading-tight tracking-tight">
 									Bangalore
 								</p>
 								<Link
-									className="text-[30px] font-semibold text-[#9FE870] leading-tight tracking-tight"
+									className="text-[30px] font-semibold text-[#0D1B2A] leading-tight tracking-tight"
 									href="/">
 									Langestraat 45a, <br /> 7511 HB
 								</Link>
@@ -114,7 +114,7 @@ export default function Footer() {
 						whileInView={{
 							borderTopWidth: 1,
 							width: "100%",
-							borderColor: "#9FE870",
+							borderColor: "#0D1B2A",
 							origin: "left",
 						}}
 						transition={{
@@ -133,7 +133,7 @@ export default function Footer() {
 								duration: 1,
 								ease: "easeInOut",
 							}}
-							className="text-[#9FE870] text-sm overflow-hidden">
+							className="text-[#0D1B2A] text-sm overflow-hidden">
 							AICERA 2025
 						</motion.h2>
 						<motion.h2
@@ -146,7 +146,7 @@ export default function Footer() {
 								duration: 1,
 								ease: "easeInOut",
 							}}
-							className="text-[#9FE870] text-sm overflow-hidden">
+							className="text-[#0D1B2A] text-sm overflow-hidden">
 							Privacy Statement
 						</motion.h2>
 					</div>

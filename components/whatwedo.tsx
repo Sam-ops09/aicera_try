@@ -10,7 +10,7 @@ export default function Whatwedo() {
 	return (
 		<div
 			id="what-we-do"
-			className="w-full py-20 bg-[#FFD7EF] relative">
+			className="w-full py-20 bg-[#E1E2E1] relative">
 			<motion.div
 				animate={{ rotate: [-360, 360] }}
 				transition={{

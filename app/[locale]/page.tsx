@@ -4,6 +4,7 @@ import Lenis from "@studio-freight/lenis";
 import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import {
+	AboutUs,
 	Collaboration,
 	Companies,
 	Footer,
@@ -41,6 +42,7 @@ export default function App() {
 				<>
 					<Hero />
 					<Journey />
+					<AboutUs />
 					<Companies />
 					<Whatwedo />
 					<Slider />

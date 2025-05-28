@@ -21,7 +21,7 @@ export default function Slider() {
 	return (
 		<div
 			id="transformation"
-			className="w-full flex flex-col gap-10 pb-10 bg-[#FFD7EF]">
+			className="w-full flex flex-col gap-10 pb-10 bg-[#E1E2E1]">
 			<div className="w-full flex justify-start items-center padding-x">
 				<div className="w-[72%] flex flex-col gap-7 xm:w-full sm:w-full">
 					<h4 className="text-[24px] text-[#260A2F] leading-tight tracking-tighter">

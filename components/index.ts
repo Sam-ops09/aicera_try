@@ -1,4 +1,5 @@
 export { default as Navbar } from "./navbar";
+export { default as AboutUs } from "./about";
 export { default as Footer } from "./footer";
 export { default as Preload } from "./preload";
 export { default as Hero } from "./hero";
@@ -10,3 +11,4 @@ export { default as Card } from "./wwd-cards";
 export { default as Collaboration } from "./collaboration";
 export { default as TextHover } from "./text-hover";
 export { default as Words } from "./words";
+export { default as CardV2 } from "./small-cards";

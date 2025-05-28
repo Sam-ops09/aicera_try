@@ -1,28 +1,57 @@
 import "@/styles/globals.css";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
+import { unstable_setRequestLocale } from 'next-intl/server';
+import type { ReactNode } from 'react';
 
-export const metadata: Metadata = {
-	title: "SupaDupa - Let's build some good companies!",
-	description: "SupaDupa website clone by devwithzain",
+export const viewport: Viewport = {
+	width: "device-width",
+	initialScale: 1,
+	themeColor: "#ffffff"
 };
 
-export default async function RootLayout({
-	children,
-	params: { locale },
-}: {
-	children: React.ReactNode;
-	params: { locale: string };
-}) {
-	const messages = await getMessages();
+export const metadata: Metadata = {
+	title: "AICERA - Smarter Tech. Sharper Minds",
+	description: "AICERA website by Samanyu B Rao",
+	robots: {
+		index: true,
+		follow: true,
+	},
+	openGraph: {
+		title: "AICERA - Smarter Tech. Sharper Minds",
+		description: "AICERA website by Samanyu B Rao",
+		type: "website",
+	},
+};
+
+export async function generateStaticParams() {
+	return [{ locale: 'en' }, { locale: 'nl' }];
+}
+
+type Props = {
+	children: ReactNode;
+	params: Promise<{ locale: string }>;
+};
+
+export default async function RootLayout({ children, params }: Props) {
+	const resolvedParams = await params;
+	const locale = resolvedParams.locale;
+
+	if (typeof locale !== 'string') {
+		throw new Error('Invalid locale parameter');
+	}
+
+	unstable_setRequestLocale(locale);
+	const messages = await getMessages({ locale });
+
 	return (
 		<html lang={locale}>
-			<body>
-				<NextIntlClientProvider messages={messages}>
-					{children}
-				</NextIntlClientProvider>
-			</body>
+		<body suppressHydrationWarning>
+		<NextIntlClientProvider messages={messages} locale={locale}>
+			{children}
+		</NextIntlClientProvider>
+		</body>
 		</html>
 	);
 }

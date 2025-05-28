@@ -35,7 +35,7 @@ export default function PreLoad() {
 			variants={slideUp}
 			initial="initial"
 			exit="exit"
-			className="h-screen w-screen flex items-center justify-center fixed z-20 bg-[#9FE870] ">
+			className="h-screen w-screen flex items-center justify-center fixed z-20 bg-[#E1E2E1] ">
 			{dimension.width > 0 && (
 				<>
 					<motion.div
@@ -51,8 +51,8 @@ export default function PreLoad() {
 								delay: 0.5,
 								ease: [0.76, 0, 0.24, 1],
 							}}
-							className="text-[#163300] text-[40px] xm:text-[20px] sm:text-[20px] leading-tight tracking-tighter font-medium">
-							Let&apos;s Start
+							className="text-[#0D1B2A] text-[40px] xm:text-[20px] sm:text-[20px] leading-tight tracking-tighter font-medium">
+							Smarter Tech
 						</motion.p>
 						<motion.img
 							initial={{ rotate: 0 }}
@@ -73,13 +73,13 @@ export default function PreLoad() {
 								delay: 0.5,
 								ease: [0.76, 0, 0.24, 1],
 							}}
-							className="text-[#163300] text-[40px] xm:text-[20px] sm:text-[20px] leading-tight tracking-tighter font-medium">
-							Something good
+							className="text-[#0D1B2A] text-[40px] xm:text-[20px] sm:text-[20px] leading-tight tracking-tighter font-medium">
+							Sharper Minds
 						</motion.p>
 					</motion.div>
 					<svg className="absolute top-0 w-full h-calc-100">
 						<motion.path
-							className="fill-[#9FE870]"
+							className="fill-[#E1E2E1]"
 							variants={curve}
 							initial="initial"
 							exit="exit"

@@ -1,4 +1,3 @@
-
 "use client";
 import gsap from "gsap";
 import Link from "next/link";
@@ -129,16 +128,16 @@ export default function Hero() {
 	};
 
 	return (
-		<div className="w-full min-h-screen flex flex-col items-center justify-center padding-x gap-14 mb-10">
+		<div className="w-full min-h-screen flex flex-col items-center justify-start pt-20 sm:pt-24 xm:pt-24 padding-x gap-14 mb-10">
 			<Navbar />
 			<div
-				className="flex flex-col justify-start w-full"
+				className="flex flex-col justify-start w-full mt-10 sm:mt-0 xm:mt-0"
 				ref={containerRef}>
-				<h1 className="text-[24px] xm:text-lg sm:text-lg text-[#9FE870] font-normal leading-tight tracking-tight">
+				<h1 className="text-[24px] xm:text-[18px] sm:text-[18px] text-[#0D1B2A] font-normal leading-tight tracking-tight">
 					{t("welcome-to")}
 				</h1>
 				<span
-					className="flex text-[250px] text-[#9FE870] font-bold leading-[200px] sm:leading-[75px] xm:leading-[75px] tracking-tighter mx-auto whitespace-nowrap text-center mt-20 xm:mt-0 sm:mt-0"
+					className="flex text-[250px] text-[#0D1B2A] font-bold leading-[200px] sm:leading-[60px] xm:leading-[60px] sm:text-[100px] xm:text-[100px] tracking-tighter mx-auto whitespace-nowrap text-center mt-20 xm:mt-5 sm:mt-5"
 					ref={textRef}>
 					{"AICERA".split("").map((item: string, i: number) => (
 						<motion.p
@@ -164,7 +163,7 @@ export default function Hero() {
 					{/* Video loading spinner/placeholder */}
 					{!isVideoLoaded && (
 						<div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 rounded-[30px]">
-							<div className="w-12 h-12 border-4 border-[#9FE870] border-t-transparent rounded-full animate-spin"></div>
+							<div className="w-12 h-12 border-4 border-[#0D1B2A] border-t-transparent rounded-full animate-spin"></div>
 						</div>
 					)}
 
@@ -198,22 +197,22 @@ export default function Hero() {
 						<source type="video/mp4" data-src="./heroVideo.mp4" />
 					</motion.video>
 
-					<motion.div
-						animate={{ rotate: [-360, 360] }}
-						transition={{
-							repeat: Infinity,
-							repeatType: "loop",
-							duration: 20,
-							ease: "linear",
-						}}
-						className="flex items-center absolute top-36 -left-16 xm:hidden sm:hidden">
-						<Image
-							src={heroCircle}
-							alt="heroCircleImg"
-							width={120}
-							height={120}
-						/>
-					</motion.div>
+					{/*<motion.div*/}
+					{/*	animate={{ rotate: [-360, 360] }}*/}
+					{/*	transition={{*/}
+					{/*		repeat: Infinity,*/}
+					{/*		repeatType: "loop",*/}
+					{/*		duration: 20,*/}
+					{/*		ease: "linear",*/}
+					{/*	}}*/}
+					{/*	className="flex items-center absolute top-36 -left-16 xm:hidden sm:hidden">*/}
+					{/*	<Image*/}
+					{/*		src={heroCircle}*/}
+					{/*		alt="heroCircleImg"*/}
+					{/*		width={120}*/}
+					{/*		height={120}*/}
+					{/*	/>*/}
+					{/*</motion.div>*/}
 				</div>
 				<motion.div
 					initial={{ borderTopWidth: 0, width: "0%" }}
@@ -221,7 +220,7 @@ export default function Hero() {
 					whileInView={{
 						borderTopWidth: 1,
 						width: "100%",
-						borderColor: "#9FE870",
+						borderColor: "#0D1B2A",
 						origin: "left",
 					}}
 					transition={{
@@ -240,22 +239,22 @@ export default function Hero() {
 							height={20}
 							className="h-fit"
 						/>
-						<h1 className="whitespace-nowrap text-[20px] uppercase text-[#9FE870] font-normal leading-tight tracking-tight rotate-90 absolute -bottom-5 -left-[73px]">
+						<h1 className="whitespace-nowrap text-[20px] uppercase text-[#0D1B2A] font-normal leading-tight tracking-tight rotate-90 absolute -bottom-5 -left-[73px]">
 							{t("start")}
 						</h1>
 					</div>
 					<div className="flex flex-col gap-5">
 						<h1
-							className="text-[24px] xm:text-lg sm:text-lg text-[#9FE870] font-normal leading-tight tracking-tight"
+							className="text-[24px] xm:text-lg sm:text-lg text-[#0D1B2A] font-normal leading-tight tracking-tight"
 							dangerouslySetInnerHTML={{ __html: t("where-the-journey") }}
 						/>
 						<div className="w-fit flex flex-col gap-2">
 							<Link
-								className="text-[18px] text-secondary font-normal leading-tight tracking-tight"
+								className="text-[18px] text-[#0D1B2A] font-normal leading-tight tracking-tight"
 								href="/#our-ambition">
 								{t("lets-build")}
 							</Link>
-							<div className="w-full h-[1px] rounded-lg bg-secondary" />
+							<div className="w-full h-[1px] rounded-lg bg-[#0D1B2A]" />
 						</div>
 					</div>
 				</div>
