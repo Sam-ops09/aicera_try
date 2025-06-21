@@ -6,29 +6,29 @@ export default function Companies() {
 	return (
 		<>
 			<Marquee
-				className="text-[#163300]"
-				titile1="Let's build"
-				titile2="good companies"
+				className="text-[#0D1B2A]"
+				titile1="Let's Migrate"
+				titile2=" to the future"
 			/>
-			<div className="w-full py-20 flex justify-center items-center padding-x">
+			<div className="w-full py-5 flex justify-center items-center padding-x">
 				<div className="w-[70%] xm:w-full sm:w-full flex flex-col gap-10">
 					<div>
-						<h1 className="text-[40px] xm:text-[35px] sm:text-[30px] xm:leading-none sm:leading-none text-[#163300] font-bold leading-[60px] tracking-tight">
+						<h1 className="text-[40px] xm:text-[35px] sm:text-[30px] xm:leading-none sm:leading-none text-[#0D1B2A] font-bold leading-[60px] tracking-tight">
 							{t("companiesHeading")}
 						</h1>
 					</div>
 					<div>
-						<p className="text-[20px] text-[#163300] leading-normal tracking-tight">
+						<p className="text-[20px] text-[#0D1B2A] leading-normal tracking-tight">
 							{t("companiesPara")}
 						</p>
 					</div>
 					<div>
-						<p className="text-[23px] text-[#163300] leading-normal tracking-tight">
+						<p className="text-[23px] text-[#0D1B2A] leading-normal tracking-tight">
 							{t("companiesPara1")}
 						</p>
 					</div>
 					<div>
-						<p className="text-[23px] text-[#163300] leading-normal tracking-tight">
+						<p className="text-[23px] text-[#0D1B2A] leading-normal tracking-tight">
 							{t("companiesPara2")}
 						</p>
 					</div>

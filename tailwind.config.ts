@@ -18,11 +18,17 @@ const config: Config = {
       }
     },
     screens: {
-      xm: { max: "400px" },
-      sm: { min: "401px", max: "768px" },
+      xs: { max: "320px" },
+      xm: { min: "321px", max: "480px" },
+      sm: { min: "481px", max: "768px" },
       md: { min: "769px", max: "1024px" },
       lg: { min: "1025px", max: "1490px" },
       xl: { min: "1491px" },
+      // Additional utility breakpoints
+      "max-xs": { max: "320px" },
+      "max-xm": { max: "480px" },
+      "max-sm": { max: "768px" },
+      "max-md": { max: "1024px" },
     }
   },
   plugins: [],

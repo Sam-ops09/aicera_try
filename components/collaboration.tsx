@@ -8,7 +8,6 @@ import { useScroll, useTransform, motion } from "framer-motion";
 import {
 	arrowLeft,
 	arrowRight,
-	collaborationCircle,
 	hartman1,
 	hartmanBlack,
 	saion1,
@@ -38,14 +37,14 @@ export default function Collaboration() {
 	return (
 		<div
 			id="our-impact"
-			className="w-full bg-[#1B386F] py-10 padding-x">
-			<div className="w-full flex justify-start items-center xm:pb-10 sm:pb-10">
-				<div className="w-[72%] xm:w-full sm:w-full flex flex-col gap-4">
-					<h4 className="text-[24px] text-[#DBE2EF] leading-tight tracking-tighter">
+			className="w-full bg-[#1B386F] py-10 xs:py-6 xm:py-8 sm:py-9 padding-x">
+			<div className="w-full flex justify-start items-center xs:pb-6 xm:pb-8 sm:pb-10">
+				<div className="w-[72%] xs:w-full xm:w-full sm:w-full flex flex-col gap-4 xs:gap-2 xm:gap-3 sm:gap-4">
+					<h4 className="text-[24px] xs:text-[16px] xm:text-[18px] sm:text-[20px] md:text-[22px] text-[#DBE2EF] leading-tight tracking-tighter">
 						{t("ourImpactHeading1")}
 					</h4>
 
-					<h1 className="text-[80px] xm:text-[35px] sm:text-[40px] xm:leading-[40px] sm:leading-[50px] text-[#DBE2EF] font-bold leading-[80px] tracking-tighter">
+					<h1 className="text-[80px] xs:text-[28px] xm:text-[32px] sm:text-[36px] md:text-[50px] lg:text-[70px] xl:text-[80px] xs:leading-[30px] xm:leading-[34px] sm:leading-[38px] md:leading-[52px] lg:leading-[72px] xl:leading-[80px] text-[#DBE2EF] font-bold tracking-tighter">
 						{t("ourImpactHeading2")}
 					</h1>
 				</div>
@@ -69,31 +68,31 @@ export default function Collaboration() {
 					))}
 				</motion.div>
 			</div>
-			<div className="w-full pb-10 bg-[#9FE870] rounded-[20px]">
-				<div className="p-5 overflow-hidden">
+			<div className="pb-6 bg-[#E1E2E1] rounded-[20px]">
+				<div className="p-3 overflow-hidden">
 					<Swiper
 						modules={[Navigation]}
 						loop
-						spaceBetween={30}
+						spaceBetween={20}
 						slidesPerView={1}
 						onSwiper={(swiper) => (swiperRef.current = swiper)}>
 						<SwiperSlide>
-							<motion.div className="w-full p-14 xm:p-0 sm:p-0 flex justify-between  rounded-[30px] gap-20 xm:gap-10 sm:gap-10 xm:flex-col sm:flex-col">
-								<div className="w-1/2 xm:w-full sm:w-full flex flex-col gap-14 pt-10 xm:gap-5 sm:gap-5">
+							<motion.div className="p-8 xm:p-0 sm:p-0 flex justify-between rounded-[20px] gap-12 xm:gap-6 sm:gap-6 xm:flex-col sm:flex-col">
+								<div className="w-1/2 xm:w-full sm:w-full flex flex-col gap-8 pt-6 xm:gap-4 sm:gap-4">
 									<Image
 										src={hartmanBlack}
 										alt="whatwedoImg"
-										className="w-[100px] object-cover text-black"
+										className="w-[80px] object-cover text-black"
 									/>
-									<div className="flex flex-col gap-4">
-										<h4 className="text-[40px] xm:text-[27px] sm:text-[27px] leading-tight tracking-tight">
+									<div className="flex flex-col gap-3">
+										<h4 className="text-[32px] xm:text-[24px] sm:text-[24px] leading-tight tracking-tight">
 											{t("title1")}
 										</h4>
 										<div className="flex flex-col">
-											<h2 className="text-[24px] xm:text-[20px] sm:text-[20px] leading-tight tracking-tighter">
+											<h2 className="text-[20px] xm:text-[18px] sm:text-[18px] leading-tight tracking-tighter">
 												{t("heading1")}
 											</h2>
-											<h4 className="text-[24px] xm:text-[20px] sm:text-[20px] leading-tight tracking-tighter">
+											<h4 className="text-[20px] xm:text-[18px] sm:text-[18px] leading-tight tracking-tighter">
 												{t("para1")}
 											</h4>
 										</div>
@@ -105,42 +104,26 @@ export default function Collaboration() {
 										alt="img"
 										className="w-full object-cover"
 									/>
-									<motion.div
-										animate={{ rotate: [-360, 360] }}
-										transition={{
-											repeat: Infinity,
-											repeatType: "loop",
-											duration: 20,
-											ease: "linear",
-										}}
-										className="flex items-center absolute -bottom-14 right-20 xm:hidden sm:hidden">
-										<Image
-											src={collaborationCircle}
-											alt="heroCircleImg"
-											width={120}
-											height={120}
-										/>
-									</motion.div>
 								</motion.div>
 							</motion.div>
 						</SwiperSlide>
 						<SwiperSlide>
-							<motion.div className="w-full p-14 flex justify-between rounded-[30px] gap-20 xm:gap-10 sm:gap-5 xm:flex-col sm:flex-col xm:p-0 sm:p-0">
-								<div className="w-1/2 xm:w-full sm:w-full flex flex-col gap-14 pt-10 xm:gap-5 sm:gap-5">
+							<motion.div className="w-full p-8 flex justify-between rounded-[20px] gap-12 xm:gap-6 sm:gap-4 xm:flex-col sm:flex-col xm:p-0 sm:p-0">
+								<div className="w-1/2 xm:w-full sm:w-full flex flex-col gap-8 pt-6 xm:gap-4 sm:gap-4">
 									<Image
 										src={saionBlack}
 										alt="whatwedoImg"
-										className="w-[100px] object-cover text-black"
+										className="w-[80px] object-cover text-[#1B386F]"
 									/>
-									<div className="flex flex-col gap-4">
-										<h4 className="text-[40px] xm:text-[27px] sm:text-[27px] leading-tight tracking-tight">
+									<div className="flex flex-col gap-3">
+										<h4 className="text-[32px] xm:text-[24px] sm:text-[24px] leading-tight tracking-tight">
 											{t("title2")}
 										</h4>
 										<div className="flex flex-col">
-											<h2 className="text-[24px] xm:text-[20px] sm:text-[20px] leading-tight tracking-tighter">
+											<h2 className="text-[20px] xm:text-[18px] sm:text-[18px] leading-tight tracking-tighter">
 												{t("heading2")}
 											</h2>
-											<h4 className="text-[24px] xm:text-[20px] sm:text-[20px] leading-tight tracking-tighter">
+											<h4 className="text-[20px] xm:text-[18px] sm:text-[18px] leading-tight tracking-tighter">
 												{t("para2")}
 											</h4>
 										</div>
@@ -152,30 +135,14 @@ export default function Collaboration() {
 										alt="img"
 										className="w-full object-cover"
 									/>
-									<motion.div
-										animate={{ rotate: [-360, 360] }}
-										transition={{
-											repeat: Infinity,
-											repeatType: "loop",
-											duration: 20,
-											ease: "linear",
-										}}
-										className="flex items-center absolute -bottom-14 right-20 xm:hidden sm:hidden">
-										<Image
-											src={collaborationCircle}
-											alt="heroCircleImg"
-											width={120}
-											height={120}
-										/>
-									</motion.div>
 								</motion.div>
 							</motion.div>
 						</SwiperSlide>
 					</Swiper>
-					<div className="flex w-fit gap-2 pl-10 xm:p-0 sm:p-0 xm:pt-5 sm:pt-5">
+					<div className="flex w-fit gap-2 pl-6 xm:p-0 sm:p-0 xm:pt-3 sm:pt-3">
 						<div
 							onClick={handlePrev}
-							className="bg-[#DBE2EF] hover:bg-[#FFEB69] transition-all duration-200 ease-linear cursor-pointer px-3 py-2 rounded-[30px]">
+							className="bg-[#0D1B2A] hover:bg-[#1B386F] transition-all duration-200 ease-linear cursor-pointer px-2 py-1 rounded-[20px]">
 							<Image
 								src={arrowLeft}
 								alt="arrowLeft"
@@ -186,7 +153,7 @@ export default function Collaboration() {
 						</div>
 						<div
 							onClick={handleNext}
-							className="bg-[#DBE2EF] hover:bg-[#FFEB69] transition-all duration-200 ease-linear cursor-pointer px-3 py-2 rounded-[30px]">
+							className="bg-[#0D1B2A] hover:bg-[#1B386F] transition-all duration-200 ease-linear cursor-pointer px-2 py-1 rounded-[20px]">
 							<Image
 								src={arrowRight}
 								alt="arrowRight"

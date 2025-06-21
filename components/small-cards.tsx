@@ -1,9 +1,9 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
+
 import {
     whatwedoImg1,
     whatwedoImg2,
@@ -12,7 +12,7 @@ import {
 } from "@/public";
 
 if (typeof window !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin();
 }
 
 const getCards = (t: (key: string) => string) => [
@@ -50,104 +50,176 @@ const getCards = (t: (key: string) => string) => [
     },
 ];
 
+// Responsive breakpoints and dimensions
+const getResponsiveDimensions = () => {
+    if (typeof window === "undefined") {
+        return { cardWidth: 280, cardHeight: 360, gap: 16 };
+    }
+
+    const width = window.innerWidth;
+
+    if (width < 640) { // mobile
+        return {
+            cardWidth: Math.min(280, width - 48),
+            cardHeight: 360,
+            gap: 16,
+        };
+    } else if (width < 768) { // small tablet
+        return {
+            cardWidth: 280,
+            cardHeight: 360,
+            gap: 20,
+        };
+    } else if (width < 1024) { // tablet
+        return {
+            cardWidth: 300,
+            cardHeight: 380,
+            gap: 24,
+        };
+    } else if (width < 1280) { // desktop
+        return {
+            cardWidth: 320,
+            cardHeight: 400,
+            gap: 28,
+        };
+    } else { // large desktop
+        return {
+            cardWidth: 340,
+            cardHeight: 420,
+            gap: 32,
+        };
+    }
+};
+
 export default function CardV2() {
     const t = useTranslations("aboutUsContent");
     const cards = getCards(t);
-    const containerRefs = useRef<Array<HTMLDivElement | null>>([]);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [dimensions, setDimensions] = useState(getResponsiveDimensions());
+    const animationRef = useRef<gsap.core.Timeline | null>(null);
 
+    // Animation config
+    const carouselDuration = 40;
+
+    // Handle window resize
     useEffect(() => {
-        containerRefs.current.forEach((container, idx) => {
-            if (!container) return;
-            const image = container.querySelector(".card-image");
-            const text = container.querySelector(".card-text");
+        const handleResize = () => {
+            const newDimensions = getResponsiveDimensions();
+            setDimensions(newDimensions);
+        };
 
-            gsap.fromTo(
-                image,
-                { x: 150, opacity: 0 },
-                {
-                    x: 0,
-                    opacity: 1,
-                    scrollTrigger: {
-                        trigger: container,
-                        start: "top 80%",
-                        end: "bottom 60%",
-                        toggleActions: "play none none reverse",
-                    },
-                    duration: 1,
-                    ease: "power2.out",
-                }
-            );
+        window.addEventListener('resize', handleResize);
+        handleResize(); // Set initial dimensions
 
-            gsap.fromTo(
-                text,
-                { x: -100, opacity: 0 },
-                {
-                    x: 0,
-                    opacity: 1,
-                    scrollTrigger: {
-                        trigger: container,
-                        start: "top 85%",
-                        end: "bottom 60%",
-                        toggleActions: "play none none reverse",
-                    },
-                    duration: 1,
-                    ease: "power2.out",
-                }
-            );
-        });
+        return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    return (
-        <>
-            {cards.map((card, index) => (
-                <div
-                    key={index}
-                    ref={(el) => {
-                        containerRefs.current[index] = el;
-                    }}
-                    className="h-auto flex items-center justify-center sticky top-40 w-full xm:top-[10%] sm:top-[10%]"
-                >
-                    <div
-                        className="w-full p-14 xm:p-6 sm:p-6 flex justify-between rounded-3xl gap-8 relative -top-[45%] h-[500px] transform origin-top xm:flex-col sm:flex-col overflow-hidden"
-                        style={{ backgroundColor: card.bg }}
-                    >
-                        <div className="w-1/2 xm:w-full sm:w-full h-full flex flex-col gap-10 pt-8 xm:pt-4 sm:pt-4 xm:gap-4 sm:gap-4 card-text">
-                            <div className="flex flex-col gap-2">
-                                <h2
-                                    className="text-[60px] xm:text-[32px] sm:text-[32px] xm:leading-none sm:leading-none font-bold leading-[65px] tracking-tighter"
-                                    style={{ color: card.text }}
-                                >
-                                    {card.heading.map((h, idx) => (
-                                        <span key={idx} className="block">
-                      {h}
-                    </span>
-                                    ))}
-                                </h2>
-                                <p
-                                    className="text-[18px] sm:text-base xm:text-base leading-normal tracking-tighter"
-                                    style={{ color: card.text }}
-                                >
-                                    {card.para}
-                                </p>
-                            </div>
-                            <div className="w-fit flex flex-col gap-2">
-                                <div
-                                    className="w-full h-[1px] rounded-lg"
-                                    style={{ backgroundColor: card.link }}
-                                />
-                            </div>
-                        </div>
-                        <div className="w-1/2 xm:w-full sm:w-full h-full flex items-center justify-center card-image">
-                            <Image
-                                src={card.img}
-                                alt="whatwedoImg"
-                                className="w-[75%] object-cover"
-                                priority
-                            />
-                        </div>
-                    </div>
+    useEffect(() => {
+        if (!containerRef.current) return;
+
+        // Kill existing animations
+        if (animationRef.current) {
+            animationRef.current.kill();
+        }
+
+        const container = containerRef.current;
+        const cardsCount = cards.length;
+        const { cardWidth, cardHeight, gap } = dimensions;
+
+        // Clear container and rebuild
+        container.innerHTML = '';
+        cards.forEach((card, idx) => {
+            const cardElement = document.createElement('div');
+            cardElement.className = 'card-item text-[#0D1B2A] p-4 sm:p-6';
+            cardElement.innerHTML = `
+                <div class="relative flex-shrink-0 h-32 sm:h-40 lg:h-44 rounded-xl overflow-hidden mb-3 sm:mb-4">
+                    <img 
+                        src="${card.img.src || card.img}" 
+                        alt="card image" 
+                        class="w-full h-full object-cover rounded-xl"
+                        loading="lazy"
+                    />
                 </div>
-            ))}
-        </>
+                <h2 class="text-lg sm:text-xl lg:text-2xl font-bold mb-2 leading-snug tracking-tight">
+                    ${card.heading.map(h => `<span class="block">${h}</span>`).join('')}
+                </h2>
+                <p class="text-sm sm:text-base flex-grow">${card.para}</p>
+                <div class="mt-3 sm:mt-4 h-1 rounded-full" style="background-color: ${card.link}"></div>
+            `;
+            cardElement.style.backgroundColor = card.bg;
+            cardElement.style.color = card.text;
+            container.appendChild(cardElement);
+        });
+
+        // Duplicate cards for infinite loop
+        const originalHTML = container.innerHTML;
+        container.innerHTML += originalHTML;
+
+        const allCards = container.querySelectorAll(".card-item");
+
+        // Setup horizontal layout (carousel only)
+        gsap.set(container, {
+            display: "flex",
+            flexWrap: "nowrap",
+            overflow: "visible",
+            width: "max-content",
+        });
+
+        allCards.forEach((card, i) => {
+            gsap.set(card, {
+                position: "relative",
+                width: cardWidth,
+                height: cardHeight,
+                marginRight: gap,
+                flexShrink: 0,
+                borderRadius: 24,
+                overflow: "hidden",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06)",
+            });
+        });
+
+        // Simple infinite scroll timeline
+        const scrollDistance = (cardWidth + gap) * cardsCount;
+        const infiniteScroll = gsap.timeline({
+            repeat: -1,
+            defaults: { ease: "linear" }
+        });
+
+        infiniteScroll.to(container, {
+            x: `-=${scrollDistance}px`,
+            duration: carouselDuration,
+            modifiers: {
+                x: (x) => {
+                    const mod = parseFloat(x) % scrollDistance;
+                    return `${mod}px`;
+                },
+            },
+        });
+
+        animationRef.current = infiniteScroll;
+
+        // Cleanup
+        return () => {
+            if (animationRef.current) {
+                animationRef.current.kill();
+            }
+        };
+    }, [cards, dimensions]);
+
+    return (
+        <div className="relative w-full flex justify-center py-4 sm:py-6 overflow-hidden">
+            <div
+                ref={containerRef}
+                className="select-none cursor-grab"
+                style={{
+                    userSelect: "none",
+                    touchAction: "pan-y",
+                    position: "relative",
+                    width: "max-content",
+                    willChange: "transform",
+                    maxWidth: "100vw",
+                }}
+            />
+        </div>
     );
 }

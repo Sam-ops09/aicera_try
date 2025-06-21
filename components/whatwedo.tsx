@@ -10,37 +10,26 @@ export default function Whatwedo() {
 	return (
 		<div
 			id="what-we-do"
-			className="w-full py-20 bg-[#E1E2E1] relative">
-			<motion.div
-				animate={{ rotate: [-360, 360] }}
-				transition={{
-					repeat: Infinity,
-					repeatType: "loop",
-					duration: 20,
-					ease: "linear",
-				}}
-				className="flex items-center absolute -top-14 right-40">
-				<Image
-					src={whatwedoCircleImg}
-					alt="heroCircleImg"
-					width={120}
-					height={120}
+			className="w-full bg-[#E1E2E1] relative">
+			{/* Header Section */}
+			<div className="py-8 xm:py-4 sm:py-6">
+				<Marquee
+					className="text-[#0D1B2A]"
+					titile1="What we do"
+					titile2="What we do"
 				/>
-			</motion.div>
-			<Marquee
-				className="text-[#260A2F]"
-				titile1="What we do"
-				titile2="What we do"
-			/>
-			<div className="w-full flex items-center justify-center">
-				<div className="w-[80%] xm:w-full sm:w-full xm:padding-x sm:padding-x">
-					<p
-						className="text-[22px] text-[#260A2F] leading-tight tracking-tight"
-						dangerouslySetInnerHTML={{ __html: t("whatwedoHeading") }}
-					/>
+				<div className="w-full flex items-center justify-center pt-8 xm:pt-4 sm:pt-6">
+					<div className="w-[80%] xm:w-full sm:w-full xm:px-4 sm:px-6">
+						<p
+							className="text-2xl xm:text-lg sm:text-xl text-[#0D1B2A] leading-tight tracking-tight text-center"
+							dangerouslySetInnerHTML={{ __html: t("whatwedoHeading") }}
+						/>
+					</div>
 				</div>
 			</div>
-			<div className="w-full padding-x py-20 xm:py-10 sm:py-10">
+
+			{/* Cards Section - Full Screen */}
+			<div className="w-full">
 				<Card />
 			</div>
 		</div>

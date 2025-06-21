@@ -21,6 +21,54 @@ body {
 
 @layer utilities {
 	.padding-x {
-		@apply px-[30px] xm:px-[20px] sm:px-[20px];
+		@apply px-[30px] xm:px-[16px] sm:px-[20px] md:px-[25px];
+	}
+	
+	.responsive-text-xs {
+		@apply text-xs xm:text-[10px] sm:text-xs;
+	}
+	
+	.responsive-text-sm {
+		@apply text-sm xm:text-xs sm:text-sm;
+	}
+	
+	.responsive-text-base {
+		@apply text-base xm:text-sm sm:text-base;
+	}
+	
+	.responsive-text-lg {
+		@apply text-lg xm:text-base sm:text-lg;
+	}
+	
+	.responsive-text-xl {
+		@apply text-xl xm:text-lg sm:text-xl;
+	}
+	
+	.responsive-text-2xl {
+		@apply text-2xl xm:text-xl sm:text-2xl;
+	}
+	
+	.responsive-text-3xl {
+		@apply text-3xl xm:text-2xl sm:text-3xl;
+	}
+	
+	.responsive-text-4xl {
+		@apply text-4xl xm:text-3xl sm:text-4xl;
+	}
+	
+	.responsive-gap {
+		@apply gap-6 xm:gap-3 sm:gap-4 md:gap-5;
+	}
+	
+	.responsive-py {
+		@apply py-8 xm:py-4 sm:py-6 md:py-7;
+	}
+	
+	.responsive-px {
+		@apply px-8 xm:px-4 sm:px-6 md:px-7;
+	}
+	
+	.responsive-margin {
+		@apply m-8 xm:m-4 sm:m-6 md:m-7;
 	}
 }

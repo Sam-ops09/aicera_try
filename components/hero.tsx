@@ -50,9 +50,10 @@ export default function Hero() {
 		}
 
 		return () => {
-			if (videoRef.current && observer) {
+			if (videoRef.current) {
 				observer.unobserve(videoRef.current);
 			}
+			observer.disconnect();
 		};
 	}, []);
 
@@ -128,7 +129,7 @@ export default function Hero() {
 	};
 
 	return (
-		<div className="w-full min-h-screen flex flex-col items-center justify-start pt-20 sm:pt-24 xm:pt-24 padding-x gap-14 mb-10">
+		<div className="w-full min-h-[100dvh] flex flex-col items-center justify-start pt-20 sm:pt-24 xm:pt-24 padding-x gap-14 mb-10">
 			<Navbar />
 			<div
 				className="flex flex-col justify-start w-full mt-10 sm:mt-0 xm:mt-0"
@@ -168,10 +169,9 @@ export default function Hero() {
 					)}
 
 					<motion.video
-						ref={(el) => {
+						ref={(el: HTMLVideoElement | null) => {
 							videoRef.current = el;
-							// @ts-ignore - framer-motion ref type issue
-							plane1.current = el;
+							plane1.current = el as unknown as null;
 						}}
 						initial={{ y: 20, opacity: 0, scale: 0.5 }}
 						animate={{
@@ -193,8 +193,8 @@ export default function Hero() {
 						className="rounded-[30px] w-full h-full object-cover"
 					>
 						{/* Add multiple sources for different devices */}
-						<source type="video/webm" data-src="./heroVideo.webm" />
-						<source type="video/mp4" data-src="./heroVideo.mp4" />
+						<source src="./heroVideo.webm" type="video/webm" />
+						<source src="./heroVideo.mp4" type="video/mp4" />
 					</motion.video>
 
 					{/*<motion.div*/}

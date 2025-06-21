@@ -18,43 +18,11 @@ export default function Journey() {
 		<motion.div
 			id="our-ambition"
 			aria-label={t("journeyTitle") || "Our Ambition"}
-			className="w-full h-[70%] xm:h-fit sm:h-fit flex items-center justify-center rounded-[30px] py-10 bg-[#1B386F] transition-all duration-300 ease-linear mb-20"
+			className="w-full h-[70%] xs:h-fit xm:h-fit sm:h-fit flex items-center justify-center rounded-[30px] xs:rounded-[20px] xm:rounded-[25px] py-10 xs:py-6 xm:py-8 sm:py-9 bg-[#1B386F] transition-all duration-300 ease-linear mb-20 xs:mb-10 xm:mb-12 sm:mb-16"
 			style={{ scale: scaleSmooth }}
 			ref={container}>
-			<div className="w-[90%] h-full flex items-center justify-center sm:w-full xm:w-full md:w-full px-5 sm:pb-20 xm:pb-20">
+			<div className="w-[90%] xs:w-full xm:w-full sm:w-full md:w-full h-full flex items-center justify-center px-5 xs:px-4 xm:px-4 sm:px-5 xs:pb-6 xm:pb-8 sm:pb-20">
 				<Words paragraph={t("journeyContent")} />
-			</div>
-			<div className="w-full h-full absolute">
-				<div className="absolute right-24 -bottom-10">
-					<motion.img
-						animate={{ rotate: [-360, 360] }}
-						transition={{
-							repeat: Infinity,
-							repeatType: "loop",
-							duration: 20,
-							ease: "linear",
-						}}
-						src="/circle2.svg"
-						alt="Rotating decorative circle 2"
-						width={130}
-						height={130}
-					/>
-				</div>
-				<div className="absolute right-60 -bottom-12">
-					<motion.img
-						animate={{ rotate: [-360, 360] }}
-						transition={{
-							repeat: Infinity,
-							repeatType: "loop",
-							duration: 20,
-							ease: "linear",
-						}}
-						src="/circle1.svg"
-						alt="Rotating decorative circle 1"
-						width={100}
-						height={100}
-					/>
-				</div>
 			</div>
 		</motion.div>
 	);

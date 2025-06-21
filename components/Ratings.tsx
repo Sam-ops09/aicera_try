@@ -31,9 +31,9 @@ export default function Ratings() {
                         width={150}
                         height={150}
                     />
-                    <div className="absolute left-[25px] bottom-[35px] w-fit rounded-[50px] border border-white cursor-pointer">
+                    <div className="absolute left-[25px] bottom-[35px] w-fit rounded-[50px] border border-[#E1E2E1] cursor-pointer">
                         <Link
-                            className="xl:text-[18px] xl:leading-[18px] text-[14px] leading-[14px] font-NeueMontreal text-white uppercase tracking-wider"
+                            className="xl:text-[18px] xl:leading-[18px] text-[14px] leading-[14px] font-NeueMontreal text-[#E1E2E1] uppercase tracking-wider"
                             href="/services">
                             <Rounded
                                 backgroundColor="#fff"
@@ -52,9 +52,9 @@ export default function Ratings() {
                         width={150}
                         height={150}
                     />
-                    <div className="absolute left-[25px] bottom-[35px] w-fit rounded-[50px] border border-white cursor-pointer">
+                    <div className="absolute left-[25px] bottom-[35px] w-fit rounded-[50px] border border-[#E1E2E1] cursor-pointer">
                         <Link
-                            className="xl:text-[18px] xl:leading-[18px] text-[14px] leading-[14px] font-NeueMontreal text-white uppercase tracking-wider"
+                            className="xl:text-[18px] xl:leading-[18px] text-[14px] leading-[14px] font-NeueMontreal text-[#E1E2E1] uppercase tracking-wider"
                             href="/services">
                             <Rounded
                                 backgroundColor="#fff"
