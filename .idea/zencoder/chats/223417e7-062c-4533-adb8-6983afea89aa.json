@@ -1,0 +1,519 @@
+{
+    "checksum": "2e31298a13611a3ba80c22fcc5cbfbd8f5be7ff37197309719c609d412192110",
+    "data": {
+    "id": "223417e7-062c-4533-adb8-6983afea89aa",
+    "createdAt": 1750491578410,
+    "updatedAt": 1750491740511,
+    "title": "TypeScript Error Resolution Guide",
+    "messages": [
+        {
+            "id": "70d16c4a-fbb2-4536-b173-af637d3dee1a",
+            "role": "user",
+            "content": [
+                {
+                    "type": "command",
+                    "commandName": "fix"
+                },
+                {
+                    "type": "codeSnippet",
+                    "text": "scrollContainerRef.current.classList",
+                    "language": "typescript jsx"
+                },
+                {
+                    "type": "text",
+                    "text": "TS18047: 'scrollContainerRef.current' is possibly 'null'."
+                }
+            ],
+            "context": {
+                "currentFile": {
+                    "path": "/Users/samanyu/Desktop/supadupa-website-clone-master/components/wwd-cards.tsx",
+                    "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/components/wwd-cards.tsx",
+                    "content": "\"use client\";\nimport Link from \"next/link\";\nimport Image from \"next/image\";\nimport { useRef, useEffect, useState, useCallback } from \"react\";\nimport { useTranslations } from \"next-intl\";\nimport { gsap } from \"gsap\";\nimport { ScrollTrigger } from \"gsap/ScrollTrigger\";\nimport {\n\twhatwedoImg1,\n\twhatwedoImg2,\n\twhatwedoImg3,\n\twhatwedoImg4,\n} from \"@/public\";\n\n// Register ScrollTrigger plugin\nif (typeof window !== \"undefined\") {\n\tgsap.registerPlugin(ScrollTrigger);\n}\n\ninterface CardData {\n\tid: number;\n\ttitle: string;\n\theading1: string;\n\theading2: string;\n\tpara: string;\n\thref: string;\n\tbgColor: string;\n\ttextColor: string;\n\tlinkColor: string;\n\timage: any;\n}\n\nexport default function Card() {\n\tconst containerRef = useRef<HTMLDivElement>(null);\n\tconst scrollContainerRef = useRef<HTMLDivElement>(null);\n\tconst cardsRef = useRef<HTMLDivElement[]>([]);\n\tconst contentRefs = useRef<HTMLDivElement[]>([]);\n\tconst imageRefs = useRef<HTMLDivElement[]>([]);\n\tconst parallaxRefs = useRef<HTMLDivElement[]>([]);\n\tconst [isLoaded, setIsLoaded] = useState(false);\n\tconst [viewportSize, setViewportSize] = useState({ width: 0, height: 0 });\n\tconst [currentCardIndex, setCurrentCardIndex] = useState(0);\n\tconst snapTimeoutRef = useRef<NodeJS.Timeout>();\n\tconst isScrollingRef = useRef(false);\n\tconst lastScrollY = useRef(0);\n\tconst scrollDirection = useRef<'up' | 'down'>('down');\n\tconst t = useTranslations(\"whatwedoContent\");\n\n\tconst cardData: CardData[] = [\n\t\t{\n\t\t\tid: 1,\n\t\t\ttitle: t(\"title1\"),\n\t\t\theading1: t(\"heading1\"),\n\t\t\theading2: t(\"heading2\"),\n\t\t\tpara: t(\"para1\"),\n\t\t\thref: t(\"href1\"),\n\t\t\tbgColor: t(\"bgColor1\"),\n\t\t\ttextColor: t(\"textColor1\"),\n\t\t\tlinkColor: t(\"linkColor1\"),\n\t\t\timage: whatwedoImg1,\n\t\t},\n\t\t{\n\t\t\tid: 2,\n\t\t\ttitle: t(\"title2\"),\n\t\t\theading1: t(\"heading3\"),\n\t\t\theading2: t(\"heading4\"),\n\t\t\tpara: t(\"para2\"),\n\t\t\thref: t(\"href2\"),\n\t\t\tbgColor: t(\"bgColor2\"),\n\t\t\ttextColor: t(\"textColor2\"),\n\t\t\tlinkColor: t(\"linkColor2\"),\n\t\t\timage: whatwedoImg2,\n\t\t},\n\t\t{\n\t\t\tid: 3,\n\t\t\ttitle: t(\"title3\"),\n\t\t\theading1: t(\"heading5\"),\n\t\t\theading2: t(\"heading6\"),\n\t\t\tpara: t(\"para3\"),\n\t\t\thref: t(\"href3\"),\n\t\t\tbgColor: t(\"bgColor3\"),\n\t\t\ttextColor: t(\"textColor3\"),\n\t\t\tlinkColor: t(\"linkColor3\"),\n\t\t\timage: whatwedoImg3,\n\t\t},\n\t\t{\n\t\t\tid: 4,\n\t\t\ttitle: t(\"title4\"),\n\t\t\theading1: t(\"heading7\"),\n\t\t\theading2: t(\"heading8\"),\n\t\t\tpara: t(\"para4\"),\n\t\t\thref: t(\"href4\"),\n\t\t\tbgColor: t(\"bgColor4\"),\n\t\t\ttextColor: t(\"textColor4\"),\n\t\t\tlinkColor: t(\"linkColor4\"),\n\t\t\timage: whatwedoImg4,\n\t\t},\n\t];\n\n\t// Helper function to snap to nearest card\n\tconst snapToCard = useCallback((targetIndex: number) => {\n\t\tif (!containerRef.current || isScrollingRef.current) return;\n\n\t\tconst { width: viewportWidth } = viewportSize;\n\t\tconst { isMobile, isTablet, isLargeDesktop, isUltrawide } = getDeviceInfo(viewportWidth);\n\n\t\t// Calculate scroll distance (same logic as in useEffect)\n\t\tlet scrollMultiplier: number;\n\t\tif (isMobile) {\n\t\t\tscrollMultiplier = 2.5;\n\t\t} else if (isTablet) {\n\t\t\tscrollMultiplier = 3;\n\t\t} else if (isUltrawide) {\n\t\t\tscrollMultiplier = 4;\n\t\t} else if (isLargeDesktop) {\n\t\t\tscrollMultiplier = 3.5;\n\t\t} else {\n\t\t\tscrollMultiplier = 3;\n\t\t}\n\n\t\tconst totalWidth = cardData.length * viewportWidth;\n\t\tconst baseScrollDistance = totalWidth - viewportWidth;\n\t\tconst scrollDistance = baseScrollDistance * scrollMultiplier;\n\n\t\t// Calculate target scroll position\n\t\tconst progress = targetIndex / (cardData.length - 1);\n\t\tconst targetScrollY = containerRef.current.offsetTop + (scrollDistance * progress);\n\n\t\t// Set scrolling flag to prevent conflicts\n\t\tisScrollingRef.current = true;\n\n\t\t// Use native scrollTo for better browser compatibility\n\t\twindow.scrollTo({\n\t\t\ttop: targetScrollY,\n\t\t\tbehavior: 'smooth'\n\t\t});\n\n\t\tsetCurrentCardIndex(targetIndex);\n\n\t\t// Reset scrolling flag after animation\n\t\tsetTimeout(() => {\n\t\t\tisScrollingRef.current = false;\n\t\t}, 1000);\n\t}, [viewportSize, cardData.length]);\n\n\t// Helper function to get device breakpoints\n\tconst getDeviceInfo = (width: number) => {\n\t\treturn {\n\t\t\tisMobile: width <= 768,\n\t\t\tisTablet: width > 768 && width <= 1024,\n\t\t\tisDesktop: width > 1024,\n\t\t\tisLargeDesktop: width > 1440,\n\t\t\tisUltrawide: width > 1920,\n\t\t};\n\t};\n\n\t// Update viewport size\n\tuseEffect(() => {\n\t\tconst updateViewportSize = () => {\n\t\t\tsetViewportSize({\n\t\t\t\twidth: window.innerWidth,\n\t\t\t\theight: window.innerHeight,\n\t\t\t});\n\t\t};\n\n\t\tupdateViewportSize();\n\t\twindow.addEventListener('resize', updateViewportSize);\n\n\t\treturn () => window.removeEventListener('resize', updateViewportSize);\n\t}, []);\n\n\tuseEffect(() => {\n\t\tif (!containerRef.current || !scrollContainerRef.current || viewportSize.width === 0) return;\n\n\t\tconst container = containerRef.current;\n\t\tconst scrollContainer = scrollContainerRef.current;\n\n\t\tconst setupAnimation = () => {\n\t\t\tconst { width: viewportWidth, height: viewportHeight } = viewportSize;\n\t\t\tconst { isMobile, isTablet, isDesktop, isLargeDesktop, isUltrawide } = getDeviceInfo(viewportWidth);\n\n\t\t\t// Calculate scroll distance based on device type\n\t\t\tlet scrollMultiplier: number;\n\t\t\tlet minScrollDistance: number;\n\n\t\t\tif (isMobile) {\n\t\t\t\tscrollMultiplier = 2.5; // Reduced for mobile\n\t\t\t\tminScrollDistance = viewportWidth * 1.5;\n\t\t\t} else if (isTablet) {\n\t\t\t\tscrollMultiplier = 3;\n\t\t\t\tminScrollDistance = viewportWidth * 2;\n\t\t\t} else if (isUltrawide) {\n\t\t\t\tscrollMultiplier = 4; // More scroll for ultrawide\n\t\t\t\tminScrollDistance = viewportWidth * 3;\n\t\t\t} else if (isLargeDesktop) {\n\t\t\t\tscrollMultiplier = 3.5;\n\t\t\t\tminScrollDistance = viewportWidth * 2.5;\n\t\t\t} else {\n\t\t\t\tscrollMultiplier = 3;\n\t\t\t\tminScrollDistance = viewportWidth * 2;\n\t\t\t}\n\n\t\t\t// Calculate total width and scroll distance\n\t\t\tconst totalWidth = cardData.length * viewportWidth;\n\t\t\tconst baseScrollDistance = totalWidth - viewportWidth;\n\t\t\tconst scrollDistance = Math.max(baseScrollDistance * scrollMultiplier, minScrollDistance);\n\n\t\t\t// Set container height based on device\n\t\t\tconst containerHeight = isMobile ? '100svh' : '100vh';\n\n\t\t\t// Set up horizontal scroll container\n\t\t\tgsap.set(scrollContainer, {\n\t\t\t\twidth: totalWidth,\n\t\t\t\theight: containerHeight,\n\t\t\t});\n\n\t\t\t// Clean up existing ScrollTriggers\n\t\t\tScrollTrigger.getAll().forEach(trigger => trigger.kill());\n\t\t\t\n\t\t\t// Clear any pending timeouts\n\t\t\tif (snapTimeoutRef.current) {\n\t\t\t\tclearTimeout(snapTimeoutRef.current);\n\t\t\t}\n\n\t\t\t// Create horizontal scroll timeline\n\t\t\tconst horizontalTl = gsap.timeline({\n\t\t\t\tscrollTrigger: {\n\t\t\t\t\ttrigger: container,\n\t\t\t\t\tstart: \"top top\",\n\t\t\t\t\tend: () => `+=${scrollDistance}`,\n\t\t\t\t\tscrub: 1.2,\n\t\t\t\t\tpin: true,\n\t\t\t\t\tanticipatePin: 1,\n\t\t\t\t\tinvalidateOnRefresh: true,\n\t\t\t\t\trefreshPriority: -1,\n\t\t\t\t\tonUpdate: (self) => {\n\t\t\t\t\t\t// Only update current card index, no snapping during scroll\n\t\t\t\t\t\tif (!isScrollingRef.current) {\n\t\t\t\t\t\t\tconst progress = self.progress;\n\t\t\t\t\t\t\tconst cardIndex = Math.round(progress * (cardData.length - 1));\n\t\t\t\t\t\t\tif (cardIndex !== currentCardIndex) {\n\t\t\t\t\t\t\t\tsetCurrentCardIndex(cardIndex);\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t},\n\t\t\t\t},\n\t\t\t});\n\n\t\t\t// Animate horizontal movement with easing\n\t\t\thorizontalTl.to(scrollContainer, {\n\t\t\t\tx: -baseScrollDistance,\n\t\t\t\tease: \"none\",\n\t\t\t});\n\n\t\t\treturn horizontalTl;\n\t\t};\n\n\t\tconst horizontalTl = setupAnimation();\n\n\t\t// Set up individual card animations\n\t\tcardsRef.current.forEach((card, index) => {\n\t\t\tif (!card) return;\n\n\t\t\tconst content = contentRefs.current[index];\n\t\t\tconst image = imageRefs.current[index];\n\t\t\tconst parallaxElement = parallaxRefs.current[index];\n\n\t\t\t// Initial setup - hide elements\n\t\t\tgsap.set([content, image], {\n\t\t\t\topacity: 0,\n\t\t\t\ty: 50,\n\t\t\t});\n\n\t\t\tif (content) {\n\t\t\t\tconst textElements = content.querySelectorAll('h4, h2, p, a, div');\n\t\t\t\tgsap.set(textElements, {\n\t\t\t\t\topacity: 0,\n\t\t\t\t\ty: 30,\n\t\t\t\t\tx: -20,\n\t\t\t\t});\n\t\t\t}\n\n\t\t\tif (image) {\n\t\t\t\tgsap.set(image, {\n\t\t\t\t\topacity: 0,\n\t\t\t\t\tscale: 0.9,\n\t\t\t\t\trotation: 0,\n\t\t\t\t});\n\t\t\t}\n\n\t\t\t// Create reveal animation for each card with snap detection\n\t\t\tconst cardTl = gsap.timeline({\n\t\t\t\tscrollTrigger: {\n\t\t\t\t\ttrigger: card,\n\t\t\t\t\tstart: \"left 75%\",\n\t\t\t\t\tend: \"left 25%\",\n\t\t\t\t\tscrub: 1.5,\n\t\t\t\t\thorizontal: true,\n\t\t\t\t\tcontainerAnimation: horizontalTl,\n\t\t\t\t\tonEnter: () => {\n\t\t\t\t\t\t// Card is entering viewport - update current index\n\t\t\t\t\t\tif (!isScrollingRef.current) {\n\t\t\t\t\t\t\tsetCurrentCardIndex(index);\n\t\t\t\t\t\t}\n\t\t\t\t\t},\n\t\t\t\t\tonLeave: () => {\n\t\t\t\t\t\t// Card is leaving viewport\n\t\t\t\t\t},\n\t\t\t\t\tonEnterBack: () => {\n\t\t\t\t\t\t// Card is re-entering from the right\n\t\t\t\t\t\tif (!isScrollingRef.current) {\n\t\t\t\t\t\t\tsetCurrentCardIndex(index);\n\t\t\t\t\t\t}\n\t\t\t\t\t},\n\t\t\t\t\tonLeaveBack: () => {\n\t\t\t\t\t\t// Card is leaving back to the left\n\t\t\t\t\t},\n\t\t\t\t}\n\t\t\t});\n\n\t\t\t// Animate content reveal\n\t\t\tif (content) {\n\t\t\t\tconst textElements = content.querySelectorAll('h4, h2, p, a, div');\n\t\t\t\tcardTl\n\t\t\t\t\t.to(content, {\n\t\t\t\t\t\topacity: 1,\n\t\t\t\t\t\ty: 0,\n\t\t\t\t\t\tduration: 0.8,\n\t\t\t\t\t\tease: \"power2.out\",\n\t\t\t\t\t}, 0)\n\t\t\t\t\t.to(textElements, {\n\t\t\t\t\t\topacity: 1,\n\t\t\t\t\t\ty: 0,\n\t\t\t\t\t\tx: 0,\n\t\t\t\t\t\tduration: 0.6,\n\t\t\t\t\t\tstagger: 0.08,\n\t\t\t\t\t\tease: \"power2.out\",\n\t\t\t\t\t}, 0.2);\n\t\t\t}\n\n\t\t\t// Animate image reveal\n\t\t\tif (image) {\n\t\t\t\tcardTl.to(image, {\n\t\t\t\t\topacity: 1,\n\t\t\t\t\tscale: 1,\n\t\t\t\t\trotation: 0,\n\t\t\t\t\tduration: 1.2,\n\t\t\t\t\tease: \"back.out(1.2)\",\n\t\t\t\t}, 0.4);\n\t\t\t}\n\n\t\t\t// Subtle parallax effect for background elements\n\t\t\tif (parallaxElement) {\n\t\t\t\tgsap.to(parallaxElement, {\n\t\t\t\t\tx: -30,\n\t\t\t\t\tscrollTrigger: {\n\t\t\t\t\t\ttrigger: card,\n\t\t\t\t\t\tstart: \"left right\",\n\t\t\t\t\t\tend: \"right left\",\n\t\t\t\t\t\tscrub: 2.5,\n\t\t\t\t\t\thorizontal: true,\n\t\t\t\t\t\tcontainerAnimation: horizontalTl,\n\t\t\t\t\t}\n\t\t\t\t});\n\t\t\t}\n\n\t\t\t// Image parallax effect\n\t\t\tif (image) {\n\t\t\t\tgsap.to(image, {\n\t\t\t\t\tx: 15,\n\t\t\t\t\tscrollTrigger: {\n\t\t\t\t\t\ttrigger: card,\n\t\t\t\t\t\tstart: \"left right\",\n\t\t\t\t\t\tend: \"right left\",\n\t\t\t\t\t\tscrub: 3.5,\n\t\t\t\t\t\thorizontal: true,\n\t\t\t\t\t\tcontainerAnimation: horizontalTl,\n\t\t\t\t\t}\n\t\t\t\t});\n\t\t\t}\n\t\t});\n\n\t\t// Set loaded state\n\t\tconst loadTimeout = setTimeout(() => setIsLoaded(true), 150);\n\n\t\treturn () => {\n\t\t\tclearTimeout(loadTimeout);\n\t\t\tif (snapTimeoutRef.current) {\n\t\t\t\tclearTimeout(snapTimeoutRef.current);\n\t\t\t}\n\t\t\tScrollTrigger.getAll().forEach(trigger => trigger.kill());\n\t\t};\n\t}, [cardData.length, viewportSize]);\n\n\t// Improved scroll to card function\n\tconst scrollToCard = (index: number) => {\n\t\tif (!containerRef.current) return;\n\n\t\tconst { width: viewportWidth } = viewportSize;\n\t\tconst { isMobile, isTablet, isLargeDesktop, isUltrawide } = getDeviceInfo(viewportWidth);\n\n\t\t// Calculate scroll distance (same logic as in useEffect)\n\t\tlet scrollMultiplier: number;\n// in your main useEffect:\n\t\tif (isMobile || isTablet) {\n\t\t\t// teardown GSAP\n\t\t\tScrollTrigger.getAll().forEach(t => t.kill());\n\t\t\t// apply native scroll-snap classes\n\t\t\tscrollContainerRef.current.classList.add('scroll-container');\n\t\t\tcardsRef.current.forEach(card => card.classList.add('card'));\n\t\t\tsetIsLoaded(true);\n\t\t\treturn;\n\t\t}\n// else: your existing GSAP setup…\n\n\t\tconst totalWidth = cardData.length * viewportWidth;\n\t\tconst baseScrollDistance = totalWidth - viewportWidth;\n\t\tconst scrollDistance = baseScrollDistance * scrollMultiplier;\n\n\t\t// Calculate target scroll position\n\t\tconst progress = index / (cardData.length - 1);\n\t\tconst targetScrollY = containerRef.current.offsetTop + (scrollDistance * progress);\n\n\t\t// Use native scrollTo for better browser compatibility\n\t\twindow.scrollTo({\n\t\t\ttop: targetScrollY,\n\t\t\tbehavior: 'smooth'\n\t\t});\n\t};\n\n\treturn (\n\t\t<div\n\t\t\tclassName=\"w-full min-h-screen relative overflow-hidden\"\n\t\t\tref={containerRef}>\n\n\t\t\t{/* Horizontal Scroll Container */}\n\t\t\t<div\n\t\t\t\tref={scrollContainerRef}\n\t\t\t\tclassName=\"flex h-full\">\n\n\t\t\t\t{cardData.map((card, index) => (\n\t\t\t\t\t<div\n\t\t\t\t\t\tkey={card.id}\n\t\t\t\t\t\tref={(el) => {\n\t\t\t\t\t\t\tif (el) cardsRef.current[index] = el;\n\t\t\t\t\t\t}}\n\t\t\t\t\t\tclassName=\"w-screen h-full flex-shrink-0 relative flex items-center justify-center\"\n\t\t\t\t\t\tstyle={{ backgroundColor: card.bgColor }}\n\t\t\t\t\t>\n\n\t\t\t\t\t\t{/* Parallax Background Element */}\n\t\t\t\t\t\t<div\n\t\t\t\t\t\t\tref={(el) => {\n\t\t\t\t\t\t\t\tif (el) parallaxRefs.current[index] = el;\n\t\t\t\t\t\t\t}}\n\t\t\t\t\t\t\tclassName=\"absolute inset-0 opacity-10\"\n\t\t\t\t\t\t\tstyle={{\n\t\t\t\t\t\t\t\tbackground: `radial-gradient(circle at 30% 70%, ${card.linkColor}40 0%, transparent 50%)`\n\t\t\t\t\t\t\t}}\n\t\t\t\t\t\t/>\n\n\t\t\t\t\t\t{/* Card Content */}\n\t\t\t\t\t\t<div className=\"w-full max-w-7xl h-full flex items-center justify-between gap-8 px-6\n\t\t\t\t\t\t\txm:flex-col xm:justify-center xm:gap-6 xm:px-4 xm:py-8\n\t\t\t\t\t\t\tsm:flex-col sm:justify-center sm:gap-8 sm:px-6 sm:py-8\n\t\t\t\t\t\t\tmd:gap-12 md:px-8\n\t\t\t\t\t\t\tlg:gap-16 lg:px-12\n\t\t\t\t\t\t\txl:gap-20 xl:px-16\n\t\t\t\t\t\t\t2xl:gap-24 2xl:px-20\n\t\t\t\t\t\t\trelative z-10\">\n\n\t\t\t\t\t\t\t{/* Content Section */}\n\t\t\t\t\t\t\t<div\n\t\t\t\t\t\t\t\tref={(el) => {\n\t\t\t\t\t\t\t\t\tif (el) contentRefs.current[index] = el;\n\t\t\t\t\t\t\t\t}}\n\t\t\t\t\t\t\t\tclassName=\"w-1/2 flex flex-col justify-center gap-8\n\t\t\t\t\t\t\t\t\txm:w-full xm:gap-4 xm:text-center xm:px-2\n\t\t\t\t\t\t\t\t\tsm:w-full sm:gap-6 sm:text-center sm:px-4\n\t\t\t\t\t\t\t\t\tmd:gap-8 md:px-6\n\t\t\t\t\t\t\t\t\tlg:gap-10 lg:px-8\n\t\t\t\t\t\t\t\t\txl:gap-12\">\n\n\t\t\t\t\t\t\t\t<div className=\"flex flex-col gap-4 xm:gap-3 sm:gap-4 md:gap-5 lg:gap-6\">\n\t\t\t\t\t\t\t\t\t<h4\n\t\t\t\t\t\t\t\t\t\tclassName=\"text-2xl leading-tight tracking-tighter opacity-80\n\t\t\t\t\t\t\t\t\t\t\txm:text-lg xm:leading-snug\n\t\t\t\t\t\t\t\t\t\t\tsm:text-xl sm:leading-tight\n\t\t\t\t\t\t\t\t\t\t\tmd:text-2xl\n\t\t\t\t\t\t\t\t\t\t\tlg:text-3xl\n\t\t\t\t\t\t\t\t\t\t\txl:text-4xl\"\n\t\t\t\t\t\t\t\t\t\tstyle={{ color: card.textColor }}\n\t\t\t\t\t\t\t\t\t>\n\t\t\t\t\t\t\t\t\t\t{card.title}\n\t\t\t\t\t\t\t\t\t</h4>\n\n\t\t\t\t\t\t\t\t\t<h2\n\t\t\t\t\t\t\t\t\t\tclassName=\"font-bold leading-tight tracking-tighter\n\t\t\t\t\t\t\t\t\t\t\ttext-4xl xm:text-3xl\n\t\t\t\t\t\t\t\t\t\t\tsm:text-4xl\n\t\t\t\t\t\t\t\t\t\t\tmd:text-5xl\n\t\t\t\t\t\t\t\t\t\t\tlg:text-6xl\n\t\t\t\t\t\t\t\t\t\t\txl:text-7xl\n\t\t\t\t\t\t\t\t\t\t\t2xl:text-8xl\"\n\t\t\t\t\t\t\t\t\t\tstyle={{ color: card.textColor }}>\n\t\t\t\t\t\t\t\t\t\t{card.heading1}\n\t\t\t\t\t\t\t\t\t\t<br />\n\t\t\t\t\t\t\t\t\t\t{card.heading2}\n\t\t\t\t\t\t\t\t\t</h2>\n\n\t\t\t\t\t\t\t\t\t<p\n\t\t\t\t\t\t\t\t\t\tclassName=\"leading-relaxed tracking-tight max-w-lg\n\t\t\t\t\t\t\t\t\t\t\ttext-base xm:text-sm xm:max-w-none xm:leading-relaxed\n\t\t\t\t\t\t\t\t\t\t\tsm:text-base sm:max-w-none sm:leading-relaxed\n\t\t\t\t\t\t\t\t\t\t\tmd:text-lg md:max-w-xl\n\t\t\t\t\t\t\t\t\t\t\tlg:text-xl lg:max-w-2xl\n\t\t\t\t\t\t\t\t\t\t\txl:text-2xl\"\n\t\t\t\t\t\t\t\t\t\tstyle={{ color: card.textColor }}>\n\t\t\t\t\t\t\t\t\t\t{card.para}\n\t\t\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t<div className=\"w-fit flex flex-col gap-2\n\t\t\t\t\t\t\t\t\txm:w-full xm:items-center\n\t\t\t\t\t\t\t\t\tsm:w-full sm:items-center\n\t\t\t\t\t\t\t\t\tmd:w-fit\">\n\t\t\t\t\t\t\t\t\t<Link\n\t\t\t\t\t\t\t\t\t\tkey={card.id}\n\t\t\t\t\t\t\t\t\t\tstyle={{ color: card.linkColor }}\n\t\t\t\t\t\t\t\t\t\tclassName=\"font-medium leading-tight tracking-tight hover:opacity-80 transition-opacity duration-300 relative group\n\t\t\t\t\t\t\t\t\t\t\ttext-base xm:text-sm\n\t\t\t\t\t\t\t\t\t\t\tsm:text-base\n\t\t\t\t\t\t\t\t\t\t\tmd:text-lg\n\t\t\t\t\t\t\t\t\t\t\tlg:text-xl\"\n\t\t\t\t\t\t\t\t\t\thref={card.href}>\n\t\t\t\t\t\t\t\t\t\t{card.href}\n\t\t\t\t\t\t\t\t\t\t<span\n\t\t\t\t\t\t\t\t\t\t\tclassName=\"absolute -bottom-1 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full\"\n\t\t\t\t\t\t\t\t\t\t\tstyle={{ backgroundColor: card.linkColor }}\n\t\t\t\t\t\t\t\t\t\t>\n\t\t\t\t\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\t\t\t</Link>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\n\t\t\t\t\t\t\t{/* Image Section */}\n\t\t\t\t\t\t\t<div\n\t\t\t\t\t\t\t\tref={(el) => {\n\t\t\t\t\t\t\t\t\tif (el) imageRefs.current[index] = el;\n\t\t\t\t\t\t\t\t}}\n\t\t\t\t\t\t\t\tclassName=\"w-1/2 flex items-center justify-center p-8\n\t\t\t\t\t\t\t\t\txm:w-full xm:p-4\n\t\t\t\t\t\t\t\t\tsm:w-full sm:p-6\n\t\t\t\t\t\t\t\t\tmd:p-8\n\t\t\t\t\t\t\t\t\tlg:p-10\n\t\t\t\t\t\t\t\t\txl:p-12\">\n\n\t\t\t\t\t\t\t\t<div className=\"relative w-full max-w-md\n\t\t\t\t\t\t\t\t\txm:max-w-xs\n\t\t\t\t\t\t\t\t\tsm:max-w-sm\n\t\t\t\t\t\t\t\t\tmd:max-w-md\n\t\t\t\t\t\t\t\t\tlg:max-w-lg\n\t\t\t\t\t\t\t\t\txl:max-w-xl\n\t\t\t\t\t\t\t\t\t2xl:max-w-2xl\">\n\n\t\t\t\t\t\t\t\t\t<Image\n\t\t\t\t\t\t\t\t\t\tsrc={card.image}\n\t\t\t\t\t\t\t\t\t\talt={card.title}\n\t\t\t\t\t\t\t\t\t\tclassName=\"relative w-full h-auto object-contain rounded-2xl transition-transform duration-300 hover:scale-105\"\n\t\t\t\t\t\t\t\t\t\tpriority={index === 0}\n\t\t\t\t\t\t\t\t\t\tsizes=\"(max-width: 768px) 90vw, (max-width: 1024px) 50vw, 40vw\"\n\t\t\t\t\t\t\t\t\t/>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t))}\n\t\t\t</div>\n\n\t\t\t{/* Card Indicators */}\n\t\t\t<div className=\"fixed right-8 top-1/2 transform -translate-y-1/2 z-50 flex flex-col gap-3\n\t\t\t\txm:right-4 xm:gap-2 sm:right-6 sm:gap-2\">\n\t\t\t\t{cardData.map((_, index) => (\n\t\t\t\t\t<button\n\t\t\t\t\t\tkey={index}\n\t\t\t\t\t\tonClick={() => snapToCard(index)}\n\t\t\t\t\t\tclassName={`w-3 h-3 rounded-full transition-all duration-300 border-2 border-white/30\n\t\t\t\t\t\t\txm:w-2 xm:h-2 sm:w-2.5 sm:h-2.5\n\t\t\t\t\t\t\t${currentCardIndex === index\n\t\t\t\t\t\t\t? 'bg-white/80 border-white/80 scale-125'\n\t\t\t\t\t\t\t: 'bg-white/20 hover:bg-white/40 hover:border-white/50'\n\t\t\t\t\t\t}`}\n\t\t\t\t\t\taria-label={`Go to card ${index + 1}`}\n\t\t\t\t\t/>\n\t\t\t\t))}\n\t\t\t</div>\n\t\t</div>\n\t);\n}",
+                    "language": "typescript jsx"
+                },
+                "codebaseEnabled": true
+            },
+            "createdAt": 1750491578412,
+            "isInternal": false,
+            "rawContent": {
+                "type": "doc",
+                "content": [
+                    {
+                        "type": "paragraph",
+                        "content": [
+                            {
+                                "type": "command",
+                                "attrs": {
+                                    "label": "fix"
+                                },
+                                "content": [
+                                    {
+                                        "type": "text",
+                                        "text": "/fix"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "codeBlock",
+                                "attrs": {
+                                    "language": "typescript jsx"
+                                },
+                                "content": [
+                                    {
+                                        "type": "text",
+                                        "text": "scrollContainerRef.current.classList"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "text",
+                                "text": "TS18047: 'scrollContainerRef.current' is possibly 'null'."
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "id": "a6d00378-589a-44aa-af63-705d292cf330",
+            "role": "assistant",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "I can see the TypeScript error in the `wwd-cards.tsx` file. The issue is that `scrollContainerRef.current` could be `null`, but the code is trying to access `.classList` without checking for null first.\n\nLet me examine the specific line where this error occurs:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_013Dk7KXKAhA4jBotFWyhgZ9",
+                    "statusText": "Viewed file",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "components/wwd-cards.tsx",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/components/wwd-cards.tsx"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Let me find the exact line with the error:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01NcH2y9VwXiqpDwFudsq9rt",
+                    "title": "Fulltext search",
+                    "statusText": "Done",
+                    "status": "SUCCESS",
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Now let me see the context around line 409:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_019gQXVJehkqoTXT1zt6jjch",
+                    "statusText": "Viewed file",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "components/wwd-cards.tsx",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/components/wwd-cards.tsx"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Let me search for the actual line with the classList error:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01YTczvWmtpVUMzMDxDTnDPB",
+                    "title": "Fulltext search",
+                    "statusText": "Done",
+                    "status": "SUCCESS",
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Now let me see the broader context around these lines:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01NbBQ8m8BUuZRNV7shjQuJe",
+                    "statusText": "Viewed file",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "components/wwd-cards.tsx",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/components/wwd-cards.tsx"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "I need to find the actual lines with the classList error. Let me search more specifically:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_014woLdEGWEACqZwAekRVV14",
+                    "statusText": "Viewed file",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "components/wwd-cards.tsx",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/components/wwd-cards.tsx"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "It seems the line numbers in the search results don't match what I'm seeing. Let me search for the specific code block that contains the classList operations:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01WDwSNQocFxNNZpXnrKMcaT",
+                    "title": "Fulltext search",
+                    "statusText": "Done",
+                    "status": "SUCCESS",
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Let me view around line 406:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_015usmfDYVkSfBKi4TYwh4XQ",
+                    "statusText": "Viewed file",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "components/wwd-cards.tsx",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/components/wwd-cards.tsx"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "I see there's a discrepancy. Let me search for the comment that should be near the problematic code:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_018WNDSqUdmtrcVmVkwshMiU",
+                    "title": "Fulltext search",
+                    "statusText": "Done",
+                    "status": "SUCCESS",
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Now let me see the context around line 404:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01HDJr3RZWYWpEYvKWWXDfnv",
+                    "statusText": "Viewed file",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "components/wwd-cards.tsx",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/components/wwd-cards.tsx"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "I notice there's a mismatch between what I'm seeing and the search results. Let me look at the original file snippet that was provided to see the problematic code:\n\nLooking at the original file snippet, I can see the problematic code around lines 404-414. The issue is in this section:\n\n```typescript\n// in your main useEffect:\nif (isMobile || isTablet) {\n    // teardown GSAP\n    ScrollTrigger.getAll().forEach(t => t.kill());\n    // apply native scroll-snap classes\n    scrollContainerRef.current.classList.add('scroll-container');\n    cardsRef.current.forEach(card => card.classList.add('card'));\n    setIsLoaded(true);\n    return;\n}\n```\n\nThe problem is that `scrollContainerRef.current` could be `null`, so we need to add a null check before accessing `.classList`. Let me fix this:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01Dk61WCcAzwaqVCumwhgwKd",
+                    "title": "",
+                    "statusText": "Text to replace not found",
+                    "status": "WARNING",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "components/wwd-cards.tsx",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/components/wwd-cards.tsx"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Let me search for the exact text to find the right indentation and format:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01PJsEGw9ZE5k1KSME9TjQZa",
+                    "title": "Fulltext search",
+                    "statusText": "Done",
+                    "status": "SUCCESS",
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Let me view the exact lines around 408:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01MFZSxnCNeJteUfQ9NYCK8P",
+                    "statusText": "Viewed file",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "components/wwd-cards.tsx",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/components/wwd-cards.tsx"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "It seems like the file content doesn't match what was shown in the original snippet. Let me search for the specific line that has the classList error:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_011qNwgRivg9tnkcVLqhj1L1",
+                    "title": "Fulltext search",
+                    "statusText": "Done",
+                    "status": "SUCCESS",
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Let me view a wider range around line 409:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01V5PG9X9eV8NHx657sbVtMj",
+                    "statusText": "Viewed file",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "components/wwd-cards.tsx",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/components/wwd-cards.tsx"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "There seems to be a discrepancy between the search results and what I'm seeing. Let me check if there are multiple functions or if the line numbers are off. Let me search for the function that contains this code:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01WDDZmsTdNwAJJkNePpeUu1",
+                    "title": "Fulltext search",
+                    "statusText": "Done",
+                    "status": "SUCCESS",
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Let me view the scrollToCard function:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_016uhjmkBuYPnNxmEb32oXeX",
+                    "statusText": "Viewed file",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "components/wwd-cards.tsx",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/components/wwd-cards.tsx"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "I notice that the code I'm seeing doesn't match the original snippet that was provided. The original snippet showed some problematic code that seems to have been commented out or is in a different location. Let me search for the exact problematic lines by looking for the specific pattern:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_016vo5mtUe2X3LAfjPwj4t8N",
+                    "title": "Fulltext search",
+                    "statusText": "Done",
+                    "status": "SUCCESS",
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Now let me view around line 405:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01VWSUFef1Vkhb8mfyA9N4A9",
+                    "statusText": "Viewed file",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "components/wwd-cards.tsx",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/components/wwd-cards.tsx"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "I'm getting inconsistent results. Let me check if there might be another location or if the file has been modified. Let me view the entire file to understand the structure better:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_017GhVqk4MoaN7FBhSSHigvU",
+                    "statusText": "Viewed file",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "components/wwd-cards.tsx",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/components/wwd-cards.tsx"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Based on the original snippet provided by the user, I can see there's a section of code that contains the problematic `scrollContainerRef.current.classList` calls. It appears to be commented code or code that was inserted incorrectly. Looking at the original snippet around lines 404-414, I can see the issue.\n\nLet me search for the exact location where this problematic code exists. It seems like there might be some misplaced code. Let me look for the main useEffect:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01U5oJn8P5mboY8vXz7kgm9H",
+                    "title": "Fulltext search",
+                    "statusText": "Done",
+                    "status": "SUCCESS",
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Let me check the main useEffect at line 172:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01E82fC5R9KGmWwevaSSo9gA",
+                    "statusText": "Viewed file",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "components/wwd-cards.tsx",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/components/wwd-cards.tsx"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Now I understand the issue better. Looking at the original snippet provided by the user, there appears to be some misplaced or commented code that contains the problematic `classList` calls. The code seems to be inserted in the wrong place within the `scrollToCard` function.\n\nFrom the original snippet, I can see this problematic section:\n\n```typescript\n// in your main useEffect:\nif (isMobile || isTablet) {\n    // teardown GSAP\n    ScrollTrigger.getAll().forEach(t => t.kill());\n    // apply native scroll-snap classes\n    scrollContainerRef.current.classList.add('scroll-container');\n    cardsRef.current.forEach(card => card.classList.add('card'));\n    setIsLoaded(true);\n    return;\n}\n```\n\nThis code appears to be incorrectly placed within the `scrollToCard` function. Let me find where this code actually exists and fix it:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_015P3jVyR3JBGtyZWXNSYm37",
+                    "statusText": "Viewed file",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "components/wwd-cards.tsx",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/components/wwd-cards.tsx"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "I see that the current file doesn't contain the problematic code that was shown in the original snippet. It seems like the code might have been modified or the snippet was from a different version. However, based on the user's error message about `scrollContainerRef.current` being possibly null, I need to find where this issue occurs.\n\nLet me check if there are any other places where `scrollContainerRef.current.classList` is used:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_011jNbdBtpChbxsFGjXSXnUp",
+                    "title": "Fulltext search",
+                    "statusText": "Done",
+                    "status": "SUCCESS",
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Now I found it! The problematic line is at line 409. Let me view the context around that line:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01LH9CWrcDdpNJibvAPehUhz",
+                    "statusText": "Viewed file",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "components/wwd-cards.tsx",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/components/wwd-cards.tsx"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "This is strange - the search results show line 409 has the classList code, but when I view that line, it shows different content. This suggests there might be a caching issue or the file has been modified. Let me try to get the current state of the file by viewing a larger section:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01DMsdZrXzgUEtRESjZ4SMbL",
+                    "statusText": "Viewed file",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "components/wwd-cards.tsx",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/components/wwd-cards.tsx"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                }
+            ],
+            "context": {
+                "author": "Coding Agent",
+                "operationId": "4e7239dd-cdef-4b91-a283-073fe3619d69"
+            },
+            "createdAt": 1750491580689,
+            "isInternal": false
+        }
+    ],
+    "isAgent": true,
+    "isNameGenerated": true,
+    "isCustomAgent": false
+}
+}

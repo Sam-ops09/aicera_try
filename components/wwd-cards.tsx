@@ -392,41 +392,6 @@ export default function Card() {
 		};
 	}, [cardData.length, viewportSize]);
 
-	// Improved scroll to card function
-	const scrollToCard = (index: number) => {
-		if (!containerRef.current) return;
-
-		const { width: viewportWidth } = viewportSize;
-		const { isMobile, isTablet, isLargeDesktop, isUltrawide } = getDeviceInfo(viewportWidth);
-
-		// Calculate scroll distance (same logic as in useEffect)
-		let scrollMultiplier: number;
-		if (isMobile) {
-			scrollMultiplier = 2.5;
-		} else if (isTablet) {
-			scrollMultiplier = 3;
-		} else if (isUltrawide) {
-			scrollMultiplier = 4;
-		} else if (isLargeDesktop) {
-			scrollMultiplier = 3.5;
-		} else {
-			scrollMultiplier = 3;
-		}
-
-		const totalWidth = cardData.length * viewportWidth;
-		const baseScrollDistance = totalWidth - viewportWidth;
-		const scrollDistance = baseScrollDistance * scrollMultiplier;
-
-		// Calculate target scroll position
-		const progress = index / (cardData.length - 1);
-		const targetScrollY = containerRef.current.offsetTop + (scrollDistance * progress);
-
-		// Use native scrollTo for better browser compatibility
-		window.scrollTo({
-			top: targetScrollY,
-			behavior: 'smooth'
-		});
-	};
 
 	return (
 		<div
