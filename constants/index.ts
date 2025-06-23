@@ -7,6 +7,12 @@ import {
 	stewards,
 } from "@/public";
 
+// Internationalization constants
+export const SUPPORTED_LOCALES = ['en', 'nl'] as const;
+export type SupportedLocale = typeof SUPPORTED_LOCALES[number];
+
+export const DEFAULT_LOCALE: SupportedLocale = 'en';
+
 export const links = [
 	{
 		id: 1,

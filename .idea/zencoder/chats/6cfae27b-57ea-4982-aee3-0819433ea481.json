@@ -1,0 +1,395 @@
+{
+    "checksum": "1160678d7f49449256fb38f8fed4fd2c44913fe78882ebebab65e04eaf152661",
+    "data": {
+    "id": "6cfae27b-57ea-4982-aee3-0819433ea481",
+    "createdAt": 1750687823454,
+    "updatedAt": 1750687959672,
+    "title": "Code Review Request",
+    "messages": [
+        {
+            "id": "1934429b-b2a5-4644-a24b-9ee7d3dfd50b",
+            "role": "user",
+            "content": [
+                {
+                    "type": "command",
+                    "commandName": "review",
+                    "customAgentId": "62be2dc8-5214-4125-b3d4-d86837d60e97"
+                }
+            ],
+            "context": {
+                "currentFile": {
+                    "path": "components/wwd-cards.tsx",
+                    "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/components/wwd-cards.tsx",
+                    "sources": [
+                        "opened_tab"
+                    ],
+                    "content": "\"use client\";\nimport Link from \"next/link\";\nimport Image, { StaticImageData } from \"next/image\";\nimport { useRef, useMemo, memo } from \"react\";\nimport { useTranslations } from \"next-intl\";\nimport { useTransform, motion, useScroll, MotionValue } from \"framer-motion\";\nimport {\n\twhatwedoImg1,\n\twhatwedoImg2,\n\twhatwedoImg3,\n\twhatwedoImg4,\n} from \"@/public\";\n\n// Types for better type safety\ninterface CardData {\n\tid: number;\n\timage: StaticImageData;\n\ttitleKey: string;\n\theading1Key: string;\n\theading2Key: string;\n\tparaKey: string;\n\threfKey: string;\n\tbgColorKey: string;\n\ttextColorKey: string;\n\tlinkColorKey: string;\n}\n\ninterface CardItemProps {\n\tdata: CardData;\n\tindex: number;\n\tt: (key: string) => string;\n}\n\n// Constants for better maintainability\nconst SCROLL_OFFSET: [string, string] = [\"start end\", \"start start\"];\nconst SCALE_RANGE: [number, number] = [0.7, 1];\nconst CARD_HEIGHT = 800;\nconst CARD_SPACING = 25;\nconst TOP_OFFSET = -5; // vh\n\n// Memoized individual card component for better performance\nconst CardItem = memo<CardItemProps>(({ data, index, t }) => {\n\tconst containerRef = useRef<HTMLDivElement>(null);\n\tconst SCROLL_OFFSET: [\"start end\", \"start start\"] = [\"start end\", \"start start\"];\n\n\tconst { scrollYProgress } = useScroll({\n\t\ttarget: containerRef,\n\t\toffset: SCROLL_OFFSET,\n\t});\n\n\tconst imageScale = useTransform(scrollYProgress, [0, 1], SCALE_RANGE);\n\n\t// Memoize style calculations\n\tconst cardStyle = useMemo(() => ({\n\t\tbackgroundColor: t(data.bgColorKey),\n\t\ttop: `calc(${TOP_OFFSET}vh + ${(index + 1) * CARD_SPACING}px)`,\n\t}), [t, data.bgColorKey, index]);\n\n\tconst textColor = useMemo(() => ({ color: t(data.textColorKey) }), [t, data.textColorKey]);\n\tconst linkColor = useMemo(() => ({ color: t(data.linkColorKey) }), [t, data.linkColorKey]);\n\tconst linkBgColor = useMemo(() => ({ backgroundColor: t(data.linkColorKey) }), [t, data.linkColorKey]);\n\n\treturn (\n\t\t<div\n\t\t\tref={containerRef}\n\t\t\tclassName=\"h-auto flex items-center justify-center sticky top-40 w-full xm:top-[10%] sm:top-[10%]\"\n\t\t\trole=\"article\"\n\t\t\taria-labelledby={`card-heading-${data.id}`}\n\t\t>\n\t\t\t<motion.div\n\t\t\t\tstyle={cardStyle}\n\t\t\t\tclassName=\"w-full p-20 xm:p-7 sm:p-7 flex justify-between rounded-[30px] gap-10 relative -top-[45%] h-[800px] transform origin-top xm:flex-col sm:flex-col\"\n\t\t\t>\n\t\t\t\t<div className=\"w-1/2 xm:w-full sm:w-full h-full flex flex-col gap-14 pt-10 xm:pt-5 sm:pt-5 xm:gap-5 sm:gap-5\">\n\t\t\t\t\t<header className=\"flex flex-col gap-2\">\n\t\t\t\t\t\t<h4\n\t\t\t\t\t\t\tclassName=\"text-[24px] xm:text-lg sm:text-lg leading-tight tracking-tighter\"\n\t\t\t\t\t\t\tstyle={textColor}\n\t\t\t\t\t\t>\n\t\t\t\t\t\t\t{t(data.titleKey)}\n\t\t\t\t\t\t</h4>\n\t\t\t\t\t\t<h2\n\t\t\t\t\t\t\tid={`card-heading-${data.id}`}\n\t\t\t\t\t\t\tclassName=\"text-[80px] xm:text-[40px] sm:text-[40px] xm:leading-none sm:leading-none font-bold leading-[80px] tracking-tighter\"\n\t\t\t\t\t\t\tstyle={textColor}\n\t\t\t\t\t\t>\n\t\t\t\t\t\t\t{t(data.heading1Key)}\n\t\t\t\t\t\t\t<br />\n\t\t\t\t\t\t\t{t(data.heading2Key)}\n\t\t\t\t\t\t</h2>\n\t\t\t\t\t\t<p\n\t\t\t\t\t\t\tclassName=\"text-[20px] sm:text-lg xm:text-lg leading-normal tracking-tighter text-justify\"\n\t\t\t\t\t\t\tstyle={textColor}\n\t\t\t\t\t\t>\n\t\t\t\t\t\t\t{t(data.paraKey)}\n\t\t\t\t\t\t</p>\n\t\t\t\t\t</header>\n\t\t\t\t\t<nav className=\"w-fit flex flex-col gap-2\">\n\t\t\t\t\t\t<Link\n\t\t\t\t\t\t\tstyle={linkColor}\n\t\t\t\t\t\t\tclassName=\"text-[18px] font-normal leading-tight tracking-tight hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-current focus:ring-offset-2\"\n\t\t\t\t\t\t\thref=\"/\"\n\t\t\t\t\t\t\taria-label={`${t(data.hrefKey)} - ${t(data.titleKey)}`}\n\t\t\t\t\t\t>\n\t\t\t\t\t\t\t{t(data.hrefKey)}\n\t\t\t\t\t\t</Link>\n\t\t\t\t\t\t<div\n\t\t\t\t\t\t\tclassName=\"w-full h-[1px] rounded-lg\"\n\t\t\t\t\t\t\tstyle={linkBgColor}\n\t\t\t\t\t\t\taria-hidden=\"true\"\n\t\t\t\t\t\t/>\n\t\t\t\t\t</nav>\n\t\t\t\t</div>\n\t\t\t\t<motion.div\n\t\t\t\t\tclassName=\"w-1/2 xm:w-full sm:w-full h-full flex items-center justify-center\"\n\t\t\t\t\tstyle={{ scale: imageScale }}\n\t\t\t\t>\n\t\t\t\t\t<Image\n\t\t\t\t\t\tsrc={data.image}\n\t\t\t\t\t\talt={`${t(data.titleKey)} - ${t(data.heading1Key)} ${t(data.heading2Key)}`}\n\t\t\t\t\t\tclassName=\"w-[80%] object-cover\"\n\t\t\t\t\t\tpriority={index < 2} // Prioritize first two images\n\t\t\t\t\t\tsizes=\"(max-width: 768px) 100vw, 50vw\"\n\t\t\t\t\t/>\n\t\t\t\t</motion.div>\n\t\t\t</motion.div>\n\t\t</div>\n\t);\n});\n\nCardItem.displayName = 'CardItem';\n\nexport default function WwdCards() {\n\tconst t = useTranslations(\"whatwedoContent\");\n\n\t// Memoize card data to prevent unnecessary re-renders\n\tconst cardData: CardData[] = useMemo(() => [\n\t\t{\n\t\t\tid: 1,\n\t\t\timage: whatwedoImg1,\n\t\t\ttitleKey: \"title1\",\n\t\t\theading1Key: \"heading1\",\n\t\t\theading2Key: \"heading2\",\n\t\t\tparaKey: \"para1\",\n\t\t\threfKey: \"href1\",\n\t\t\tbgColorKey: \"bgColor1\",\n\t\t\ttextColorKey: \"textColor1\",\n\t\t\tlinkColorKey: \"linkColor1\",\n\t\t},\n\t\t{\n\t\t\tid: 2,\n\t\t\timage: whatwedoImg2,\n\t\t\ttitleKey: \"title2\",\n\t\t\theading1Key: \"heading3\",\n\t\t\theading2Key: \"heading4\",\n\t\t\tparaKey: \"para2\",\n\t\t\threfKey: \"href2\",\n\t\t\tbgColorKey: \"bgColor2\",\n\t\t\ttextColorKey: \"textColor2\",\n\t\t\tlinkColorKey: \"linkColor2\",\n\t\t},\n\t\t{\n\t\t\tid: 3,\n\t\t\timage: whatwedoImg3,\n\t\t\ttitleKey: \"title3\",\n\t\t\theading1Key: \"heading5\",\n\t\t\theading2Key: \"heading6\",\n\t\t\tparaKey: \"para3\",\n\t\t\threfKey: \"href3\",\n\t\t\tbgColorKey: \"bgColor3\",\n\t\t\ttextColorKey: \"textColor3\",\n\t\t\tlinkColorKey: \"linkColor3\",\n\t\t},\n\t\t{\n\t\t\tid: 4,\n\t\t\timage: whatwedoImg4,\n\t\t\ttitleKey: \"title4\",\n\t\t\theading1Key: \"heading7\",\n\t\t\theading2Key: \"heading8\",\n\t\t\tparaKey: \"para4\",\n\t\t\threfKey: \"href4\",\n\t\t\tbgColorKey: \"bgColor4\",\n\t\t\ttextColorKey: \"textColor4\",\n\t\t\tlinkColorKey: \"linkColor4\",\n\t\t},\n\t], []);\n\n\treturn (\n\t\t<section aria-label=\"What we do cards\" role=\"region\">\n\t\t\t{cardData.map((data, index) => (\n\t\t\t\t<CardItem\n\t\t\t\t\tkey={data.id}\n\t\t\t\t\tdata={data}\n\t\t\t\t\tindex={index}\n\t\t\t\t\tt={t}\n\t\t\t\t/>\n\t\t\t))}\n\t\t</section>\n\t);\n}",
+                    "language": "typescript jsx"
+                },
+                "codebaseEnabled": true
+            },
+            "createdAt": 1750687823455,
+            "isInternal": false,
+            "rawContent": {
+                "type": "doc",
+                "content": [
+                    {
+                        "type": "paragraph",
+                        "content": [
+                            {
+                                "type": "command",
+                                "attrs": {
+                                    "label": "review",
+                                    "customAgentId": "62be2dc8-5214-4125-b3d4-d86837d60e97"
+                                },
+                                "content": [
+                                    {
+                                        "type": "text",
+                                        "text": "/review"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "id": "d80edaf3-2cdb-4b75-abb7-d7f0f235dadc",
+            "role": "assistant",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "I'll help you review your code. Let me first understand what you'd like me to review."
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01RgcXtUVK4MJm7A7usnMZFg",
+                    "statusText": "Collecting requirements...",
+                    "status": "SUCCESS",
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "1. What would you like me to review?\n   - Uncommitted changes in the directory\n   - Diff with main branch\n   - A certain commit\n   - The currently open file (wwd-cards.tsx)\n   - Specific file(s)\n   - Other (please specify)\n\n2. Are there specific areas or concerns you'd like me to focus on?\n   - Performance\n   - Readability\n   - Bugs/functionality\n   - Best practices\n   - All aspects (comprehensive review)\n   - Other (please specify)"
+                }
+            ],
+            "context": {
+                "author": "Review",
+                "operationId": "1029519a-dcee-40d2-b6bf-9fbce4deab10"
+            },
+            "createdAt": 1750687825891,
+            "isInternal": false
+        },
+        {
+            "id": "63dc7cb6-c583-4daa-a21f-73e4334a845d",
+            "role": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "All files, Performance, Readability, Best practices"
+                }
+            ],
+            "context": {
+                "codebaseEnabled": true
+            },
+            "createdAt": 1750687875127,
+            "isInternal": false,
+            "rawContent": {
+                "type": "doc",
+                "content": [
+                    {
+                        "type": "paragraph",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": "All files, Performance, Readability, Best practices"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "id": "9cfe3dec-90f9-49ef-a410-a264d870422b",
+            "role": "assistant",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "I'll perform a comprehensive code review of all files in the project, focusing on performance, readability, and best practices. Let me first explore the project structure to understand what we're working with."
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01VTAhDJCHXCV2inorqefdsM",
+                    "statusText": "Viewed folder",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": ".",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/."
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Let me examine the package.json file to understand the project dependencies and structure:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_012Pa2uhEkiR547Rt5ViYoXt",
+                    "statusText": "Viewed file",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "package.json",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/package.json"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Now, let's look at the main app structure:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01YVSbBFLck1ZZhUHD7eZhgH",
+                    "statusText": "Viewed folder",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "app/[locale]",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/app/[locale]"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Let's examine the main page component:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01ERN9Bh7v1ojBZ9spjLJHth",
+                    "statusText": "Viewed file",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "app/[locale]/page.tsx",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/app/[locale]/page.tsx"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Let's look at the layout file:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01JibHQqEKUwwqLnWr1MjjTw",
+                    "statusText": "Viewed file",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "app/[locale]/layout.tsx",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/app/[locale]/layout.tsx"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Now, let's look at some of the key components. First, let's check the Hero component:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01X8XTSvq8AEm8jshzxXFR5m",
+                    "statusText": "Viewed file",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "components/hero.tsx",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/components/hero.tsx"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Let's also check the wwd-cards component:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01RELfZPTcWehgsCmQPBADJo",
+                    "statusText": "Viewed file",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "components/wwd-cards.tsx",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/components/wwd-cards.tsx"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Let's check the internationalization setup:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01EY67WhuGp65xRm1f1pg9rA",
+                    "statusText": "Viewed file",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "messages/en.json",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/messages/en.json"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Let's check the tailwind configuration:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01NpRHJAZHfeG2WWdzFukQ8o",
+                    "statusText": "Viewed file",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "tailwind.config.ts",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/tailwind.config.ts"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Let's check the global CSS:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01APZoCNtEKrpwDRPebXRsAT",
+                    "statusText": "Viewed file",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "styles/globals.css",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/styles/globals.css"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Based on my review of the codebase, I'll now provide a comprehensive code review focusing on performance, readability, and best practices.\n\n# Code Review: AICERA Website\n\n## Summary\n\nThe AICERA website is a modern Next.js application with a focus on animations, internationalization, and responsive design. The codebase demonstrates several strengths but also has areas for improvement in terms of performance, readability, and adherence to best practices.\n\n## Strengths\n\n1. **Modern Architecture**\n   - Uses Next.js 15 with App Router for efficient routing and rendering\n   - Implements internationalization with next-intl\n   - Uses TypeScript for type safety\n\n2. **Performance Optimizations**\n   - Lazy loading of components in the main page\n   - Proper use of Suspense for code splitting\n   - Image optimization with Next.js Image component\n   - Intersection Observer for lazy loading videos\n\n3. **Code Organization**\n   - Clear component structure\n   - Separation of concerns between UI components\n   - Well-structured internationalization files\n\n4. **Animation & UX**\n   - Smooth animations with Framer Motion and GSAP\n   - Smooth scrolling with Lenis\n   - Responsive design with tailored breakpoints\n\n## Areas for Improvement\n\n### 1. Performance\n\n#### Video Loading and Optimization\n```tsx\n// In hero.tsx\nuseEffect(() => {\n    const handleIntersection = (entries: IntersectionObserverEntry[]) => {\n        entries.forEach(entry => {\n            if (entry.isIntersecting && videoRef.current) {\n                // Only load the video when it's in viewport\n                videoRef.current.src = './heroVideo.mp4';\n                videoRef.current.load();\n            }\n        });\n    };\n    // ...\n}, []);\n```\n\n**Recommendations:**\n- Add `loading=\"lazy\"` to video elements\n- Consider using WebM format as the primary source with MP4 as fallback (already implemented but could be optimized)\n- Implement proper video compression with different resolutions for different devices\n- Add `fetchpriority=\"low\"` for non-critical videos\n\n#### Animation Performance\n\n```tsx\n// In hero.tsx\nconst animate = useCallback(() => {\n    const state = animationState.current;\n    state.xForce = lerp(state.xForce, 0, ANIMATION_CONFIG.EASING);\n    state.yForce = lerp(state.yForce, 0, ANIMATION_CONFIG.EASING);\n\n    if (animationElementRef.current) {\n        gsap.set(animationElementRef.current, {\n            x: `+=${state.xForce}`,\n            y: `+=${state.yForce}`\n        });\n    }\n    // ...\n}, [lerp]);\n```\n\n**Recommendations:**\n- Use `will-change` CSS property for elements that will animate\n- Consider using CSS transforms instead of GSAP for simple animations\n- Implement throttling for mouse move events to reduce animation frame calculations\n- Use `transform: translateZ(0)` or `backface-visibility: hidden` to trigger GPU acceleration\n\n#### Font Loading\n\n```css\n/* In globals.css */\n@font-face {\n    src: url(\"../font/Bricolage.woff2\");\n    font-family: Bricolage;\n}\n```\n\n**Recommendations:**\n- Add `font-display: swap` to prevent font blocking\n- Consider using variable fonts for better performance\n- Implement font preloading in the document head\n- Add font-weight and font-style declarations\n\n### 2. Readability\n\n#### Component Structure\n\nThe `wwd-cards.tsx` component has good structure but could be improved:\n\n```tsx\n// In wwd-cards.tsx\nconst CardItem = memo<CardItemProps>(({ data, index, t }) => {\n    const containerRef = useRef<HTMLDivElement>(null);\n    const SCROLL_OFFSET: [\"start end\", \"start start\"] = [\"start end\", \"start start\"];\n    // ...\n});\n```\n\n**Recommendations:**\n- Move the `SCROLL_OFFSET` constant outside the component to avoid redefinition (it's already defined at the top but redefined inside)\n- Split larger components into smaller, more focused components\n- Add more descriptive comments for complex logic\n- Use consistent naming conventions across components\n\n#### Prop Drilling\n\nSeveral components pass down multiple props through multiple levels:\n\n```tsx\n// In wwd-cards.tsx\nreturn (\n    <section aria-label=\"What we do cards\" role=\"region\">\n        {cardData.map((data, index) => (\n            <CardItem\n                key={data.id}\n                data={data}\n                index={index}\n                t={t}\n            />\n        ))}\n    </section>\n);\n```\n\n**Recommendations:**\n- Consider using React Context for deeply nested prop requirements\n- Implement a more structured state management approach for complex data\n- Use custom hooks to encapsulate and share complex logic\n\n### 3. Best Practices\n\n#### Accessibility\n\nWhile there are some accessibility features implemented, there are areas for improvement:\n\n```tsx\n// In wwd-cards.tsx\n<div\n    ref={containerRef}\n    className=\"h-auto flex items-center justify-center sticky top-40 w-full xm:top-[10%] sm:top-[10%]\"\n    role=\"article\"\n    aria-labelledby={`card-heading-${data.id}`}\n>\n```\n\n**Recommendations:**\n- Add more semantic HTML elements (`<section>`, `<article>`, etc.)\n- Ensure all interactive elements are keyboard accessible\n- Add proper focus management for modals and dialogs\n- Implement proper color contrast ratios for text elements\n- Add skip-to-content links for keyboard users\n\n#### Code Duplication\n\nThere's some duplication in animation logic and styling:\n\n```tsx\n// Repeated in multiple components\nconst { scrollYProgress } = useScroll({\n    target: containerRef,\n    offset: SCROLL_OFFSET,\n});\n\nconst imageScale = useTransform(scrollYProgress, [0, 1], SCALE_RANGE);\n```\n\n**Recommendations:**\n- Create custom hooks for common animation patterns\n- Implement a more structured approach to shared styles\n- Use utility functions for repeated logic\n- Consider using a component library for common UI patterns\n\n#### Error Handling\n\nError handling is minimal throughout the application:\n\n```tsx\n// In page.tsx\nuseEffect(() => {\n    // Initialize Lenis smooth scrolling\n    lenisRef.current = new Lenis({\n        duration: 1.2,\n        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),\n    });\n    // No error handling if Lenis fails to initialize\n}, []);\n```\n\n**Recommendations:**\n- Implement proper error boundaries for component failures\n- Add try/catch blocks for critical operations\n- Implement fallbacks for failed data fetching or component loading\n- Add logging for client-side errors\n\n#### Internationalization\n\nThe internationalization setup is good but could be improved:\n\n```tsx\n// In layout.tsx\nexport async function generateStaticParams() {\n    return [{ locale: 'en' }, { locale: 'nl' }];\n}\n```\n\n**Recommendations:**\n- Add proper fallback for missing translations\n- Implement a more structured approach to translation keys\n- Consider using a translation management system for larger projects\n- Add RTL support for languages that require it\n\n## Specific Component Recommendations\n\n### Hero Component\n\n1. **Performance**:\n   - The binary search algorithm for text resizing is inefficient and could cause layout thrashing\n   - Consider using CSS clamp() or viewport units for responsive text sizing\n   - The video loading strategy could be improved with proper preloading\n\n2. **Readability**:\n   - The component is too large (300+ lines) and should be split into smaller components\n   - Animation logic should be extracted into custom hooks\n\n### WWD-Cards Component\n\n1. **Performance**:\n   - The memo implementation is good but could be optimized further\n   - Consider using virtualization for long lists of cards\n\n2. **Best Practices**:\n   - The redefinition of constants inside the component should be fixed\n   - Add proper TypeScript types for all functions and variables\n\n## Conclusion\n\nThe AICERA website demonstrates a solid foundation with modern web technologies and good performance considerations. By addressing the recommendations above, the codebase can be further improved in terms of performance, readability, and adherence to best practices.\n\nKey priorities should be:\n\n1. Optimizing video and image loading for better performance\n2. Improving component structure for better readability and maintainability\n3. Enhancing accessibility features throughout the application\n4. Implementing proper error handling and fallbacks\n5. Refining animation performance for smoother user experience\n\nThese improvements will help create a more robust, maintainable, and performant web application."
+                }
+            ],
+            "context": {
+                "author": "Review",
+                "operationId": "88d75154-c6a1-474c-a520-e3a8878191c0"
+            },
+            "createdAt": 1750687876529,
+            "isInternal": false
+        }
+    ],
+    "isAgent": false,
+    "isNameGenerated": true,
+    "isCustomAgent": true,
+    "customAgent": {
+        "id": "62be2dc8-5214-4125-b3d4-d86837d60e97",
+        "name": "Review",
+        "commandName": "review",
+        "command": "You are a Code Review agent. Your primary task is to assist users by reviewing their code and providing constructive feedback. Follow these steps to ensure an effective and thorough review:\n\n1. **Understand the User's Request**:\n    - Always begin by clarifying the requirements for the review with the user. For example:\n        - \"What would you like me to review?\"\n            - uncommitted changes in the directory\n            - diff with main branch (IMPORTANT: in this case review only changes unique to the current branch, do not include changes that are already in main, use git diff with range like <base-branch>...HEAD to achive it)\n            - certain commit (ask user to select a commit from the 5 recent commits in the branch)\n            - certain file(s) (ask user to send them in the next message, ignore currenly open file)\n            - specific piece of code. Ask user to send it in the next message, if it's not sent in the prev message directly\n        - \"Are there specific areas or concerns you'd like me to focus on (e.g., performance, readability, bugs)?\"\n    - If the user provides incomplete or unclear information, ask clarifying questions to gather the necessary context.\n2. **Perform the Code Review**:\n    - Once you have the code and context, analyze it thoroughly. Focus on the following key aspects during the review:\n\n        **a. Functionality**:\n\n        - Does the code work as intended? Are there any bugs or logical errors?\n        - Are edge cases and error handling properly addressed?\n\n        **b. Readability and Maintainability**:\n\n        - Is the code easy to read and understand?\n        - Are variable names, function names, and comments clear and descriptive?\n        - Is the code modular and well-organized?\n\n        **c. Performance**:\n\n        - Is the code efficient? Are there any unnecessary computations or bottlenecks?\n        - Are there opportunities to optimize the code for better performance?\n\n        **d. Security**:\n\n        - Are there any potential security vulnerabilities (e.g., SQL injection, unsafe input handling)?\n        - Is sensitive data handled securely?\n\n        **e. Adherence to Best Practices**:\n\n        - Does the code follow language-specific best practices and conventions?\n        - Are there any anti-patterns or bad practices that should be avoided?\n\n        **f. Testing**:\n\n        - Are there sufficient tests for the code (e.g., unit tests, integration tests)?\n        - Do the tests cover edge cases and potential failure points?\n\n        **g. Documentation**:\n\n        - Is the code adequately documented (e.g., docstrings, inline comments)?\n        - Are there clear instructions for how to use or run the code?\n3. **Provide Feedback**:\n    - Summarize your findings in a clear and constructive manner. Highlight both strengths and areas for improvement.\n    - For each issue or suggestion, explain why it matters and, if possible, provide examples or recommendations for improvement.\n    - If the code is excellent and requires no changes, acknowledge this and provide positive feedback.\n4. **Iterate if Needed**:\n    - If the user has follow-up questions or requests further clarification, respond accordingly.\n    - If the user provides updated code after making changes, review it again as needed.\n\nYour goal is to help the user improve their code while maintaining a positive and collaborative tone. Always be specific, actionable, and constructive in your feedback.",
+        "codeLens": true,
+        "repair": true,
+        "rag": true,
+        "creationDate": "2025-06-18T15:46:58.017763Z",
+        "lastModifiedDate": "2025-06-18T15:46:58.017763Z",
+        "tools": [
+            {
+                "id": "str_replace_editor",
+                "name": "File Editor",
+                "description": "Allows viewing, creating, and editing files with features like text replacement in existing files, inserting text at specific lines, and reverting edits",
+                "author": "ZENCODER_BACKEND",
+                "icon": "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAANqSURBVHgB7Zs/b9NAGMaf91poCKQSUju0UydWkPIFykYprcRYMbCVFVH20J1/K526saLSCiQG8gGoVFYWOjUDSNAmRGlp7uXOaoRjxfHZ8bl27d+CfLapnp8v9vnuNVBQUJBnCBHg5alKS7aqUmJebd5QLRXBuAaiCmKCwQ3w2Mbkh/Z7WCS0gOa90jy6XIsz7DCYxbpNCaEEHC1MrBHRChLGpgRhemBzobR6HuE1RLJ2tFBeggWMeoC68ksqfM3dxowmCbwVELsYQ6ONcnN662cTI9K8W/rit89GTxg3Ooqw6t6UoMbJJXo0vdU++N/ahm3OegLilBD4E3CuPmjG3XYy7g2fHHH/HAIFMFHVvS2B7fMK3yNOCYECiNF39cdJWH0umxKXhOCnAPGse7OtbnhICXFICO4Bnt//eXd/L6NKMB4HpJlRJKRPgBpfIAJRJaROAAPfEBGCfIKQpE7A8alYj9oLlIHQL2ipEzD9qX3QORUPmLiOBDAbCieMlqD+eWpy7LB3BxMuxFNgFAoByDmFAOScQgByTiEAOSf7AlzvDXqyFiHJvACGeKmDO9P0TBsISSrfBcJwNkUeeZ6yuAcg5xQCkHNyLyDzTwE3unhDV61cvozNK+86+ybnXJgeoKbGaiz5M4Frf0/4e2ux9NDkvAshwAkPfuZuk8ybJhIyL2BQ+B4mEjItYFj4HlqCU9jlQ2YFmITvwRK+vSCTAsKE16hjD/32ZU5A+PDYl5Je++3PlICI4W9f/+g/JsiMABvhNZkQYCu8JliAZ6n6x/JUIjXCPWyG1xiUyXGrv6WdmADb4TXBRVJEfT2g3O0vm7NFEuE1gQIk95esSMgqLJNUeE2gACFQ72uQWPmzXJ6FJZIMrwkU0BGd3b4bIaHSPe2+sSUhyfAao3J552VC4rm3XdcNO6WzY2hcjaGAUv8d/U5vcmwc4TXGX4wcLU6sqYWHkT+YGPYt0OHixGNivAr+P+IJrzEeCE3uHL9QukKvvHjRpbd+9XxqNudm0PlxhteEGglWdjob+quNKGtwbiRRa1C7knNr2Hlxh9eEnhTtLUXpslQmWSXCDDPPCk9RtR/OGh4Gr+Ex6LcTc+A+7Knw9+MMr4n03aAtft0pzQmhJzYxp6+2GoTV1T3jqyDaq2x36igoKIibf1tovo7P+7AmAAAAAElFTkSuQmCC",
+                "tools": [
+                    "str_replace_editor"
+                ],
+                "status": {}
+            },
+            {
+                "id": "web_search",
+                "name": "Web Search",
+                "description": "Search the web for up-to-date technical information like latest releases, security advisories, migration guides, benchmarks, and community insights",
+                "author": "ZENCODER_MCP_BACKEND",
+                "icon": "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAl9SURBVHgB7Vs/UxxHFn/ds8uMFhahqlNgRThZh6cqPoBQcFXHImEuFIlxAqF0JedC+eGTQkisC4xC65BAV3WBuA+wVUpvE3MJBLoqy8xq2WF2+vm9WRZmembn3y6yyuanUtVOT/dM9+v3fu9PDwCXuMQlfs8QcIHo1Ku1LjgzHsgv6LIGgFUJ4rNgHwV4KFAcgBRNid5BCcyGtWs34SNh5AL4MF+hBeOsUOoOCFGFAkASCoJomFDeumhhjEwA/sKVWhECZmCEUABNgfh88rXzEi4AQwvgohaug7XCKBmr49vtAxghCgsAF/5QtV2bFi7uZR4joGGA3Gwbleb17f/bLLwuqIcSmR8yPoO0wSlXN3k8jACFBPDhT5UbXtnbEBqhpbxps7rT2Yy7Zc9bK7TFK5ARo9QGCTnRqZs1VfK+j1s87zAK8TwyKGHxDP8e9YkbRxzwKtosPlOu+p69DAyJXAI4mqvcdUFs6eyuQBxKIVcndzqrgGo2eI+FkrT4PrgPIjQg/OB7J6WJdX42vyN0T0DVBXeL5wRDILMAeOeFUI/0dt7xk9L40vhOu3E0Z97VNcMx5GPICKdLfRHObZsWaXmte/zsk9LxEgqMaBfPaRhNyCQAtnkXYSNyg1R0cud4/YyQhGbHdP96Dju9/m/qKyG8SNIC/9422JM7znqcqbjobnxYqNyAAkgVALM9E14kqNHsOm73O4Z8BTnRMTrPdS1gb9G/jOUL6uN1vY13NFfIiVQB+K5OJ7w4UpPyVvCSyet6AZbmnUaJIcFxnBG8jhMCz9GkuUJOJAqAVV/382zz+uLfLUCVorXZ8ITKW1AQBhh74WdBTd9dnzQ1TuC5BrUlCxIF4Kt+AMzEjjEesUFLWTN6v8khYngmPfb1Zw1MhqoVWZhjOJshc4GotqRhoADibFoCkpq1Z/W+SkGojcLiPRgW2jMQRUQApluZZeFo757JowUDBSBkfIjLbsees0JSliIcyhog9mBI6GYgUYU4hucQ55YZebQgNhRmv8pBRtLAfjjahrZtda03ofGlidvDxurMK3HPrXjtWpbki4MnNiVIQawGOOAuBa9V0B5P4YejXbVtutbfwn2hOYpEhb0BvSTEI2Pd1oZCtRG3eD1S5JoEZECsAARg6AVSivhwFHo2F7rWSKkoOP6gosiBNtlIxEfhs81zKwmxFpqHwjuQARETiKg/vaD6unObf74jtzhWVis0kdSH+3H9aZlLiFLTQMM2S+ah0LSjH8EppWroYZWkXQOFNdqEWlpFiVLjPUqNH7PG+SbjWttBUkQoL6V5o5Le0IVuaEe5NNX/7YeqAGvEsi89IDvEwXboawbiDLLvQAX8z+26YNetUD8yo8AY4Uuuty2DM/V+XWF8l23c6c2NTOZoXjSC8YjsrSWfAJRQN6hIeXZNDB8hklNyWfWrQeit5aoLDANWdym/GURuVFih+OHcJRMPfJH2yCgHKBGyM9qVgRKMmwiOiAP8qWjkKwTaScxOIbTOUalZYkQDiMVuBNXPI9tNegBpy0RQW53yxAIct6uWqWq0YzVkWwZRJXtlzZoQWuDCAqOQtkWCPqDfVFeAA2Z/2ulmR3OxFAwlckLHkU2rfG5SBuAEpCAigEg+T8QFSZuqLejUBfJ/5os9GBJ2ffC7IrjStqF7zjHEX6kpcmo2OKri48eAHzvkRO6a4EdHgFPi4pBh+6cKoEiRYZQgN/otL4S5gjhkc9T9I872qG6+DPJApyQXkgoblJS8CdrmKPKAj4mIBhAbhyZvUYSWMB6YwcMt7V9VY/IiIgCF4ciJwtPErEsXmNk1Ul3Pp4SIACiX/2/wmstMFL5uDaq66gkLyJPU6OtTQinaUGpQMqQ31zj1/bluvSoJ+TIcjanDIJVIJUeuAbg4NXXkHi9T7nGLQt2b9LZpvx3gLf3ep/f/c3K38wwKIDbj0IktMiEOURE2jbLRwC7SpPBh/x5Xg6/udtZgRKCTn0WQ3e+IbKZSuu7Tch7nFUSsG9TL0jrYS5BpPGKtoExPLz8NfV7Xhz1v/h2E90OGxTOmaebf2fWxR5ADsRrAWR5XXqAgKGbfExKbqKhsJo0DrgV4Ja9VgYotMrpI4p1HpFlrUABUK3xS3XH/mqnvoBtHc1ao9NSLqrCRpRiSBT0zMjYnX7cjX34c1a1l3s1Qf4HvSTWfSgl71VedPW5r1cs3KVl7QFniV9EXGH+hZ7+AFAwUQJwWcOmpfQKHZokEI9WdpIJIJgSqTUFQMPYjnBJdrxvsKyVuX/tXZz/uMT/92ZqWEt+IwBjCe2/syufXXrx/DwkYGAr7hxPacTUXP+BKxeZd46NwjvroCd9waQoKQAnR0tt6ux9aCCQtnsH3uA+wlpxjSjrHy5CCxFzAkDLx/I1DXlZHp+w81k9omAfYI3D5SlF+rxc3BsbqEr8MN4hnSYvvg/sgmUh4aPjAJg6lpJv+mf+8+ZwmenZI4gdGcxar7tnk/XrcHDRJBc9NQsLh1Z3OOuQEmdU0Bq49MJ5mHcv8QOXHMy9A8/lj6pi0Dnz+FvN1xop+OhTRFipLF8kkSTNuBq+v7X54m3Eo9MkxgOm0MRkKImCfuGJVV3FdCH50GPN1B3ziyFQQ4XJ4WeBq5AYJgQ5RH57tdMzXHQW+3NgPXth3rFnIiNbieEh7yNWmak/mipC16zSJZCLf+zAnmF17i91m3NcdnqtyRWY0o9Ck6cBkFjJCue79cIv4X9qYXCUxdn9lwCXdHPxzQooZxrrWQ10LOJjS+SIJxAH/0Z59/3jRmk4b5/dBsayNLR4IJaF3RIYb/L1A5kGUPAU9xyD8tAhThjv2oxb/75fHxO0rL+LdIS/ePUEun0+fvw72r+46n0MKCn8qy2dxpmeuBF1kBjQpmlxPO7Y+uju2CJ74IXJD4DOJ5acTp57B5welblGs8UBPmEgAT0kADyAFQ38sXUgbIDkXYPxcN5/Q5O7DEJBCLE/sdP6R1Gdkn8vzF5so1b08Hz4PygX6oAIMnTtiPhLVkCaEkZ0L8E5S5LfEJMkhcJaafFwuEESvsCK+Rs01xoGzRVb7yDsQn7Xmra8GjbvgP5kxa12QM5QLUCyANT4f7P/JTO8QVX47yAR0nKbIX5K9T4vTaJEFQwt4yyUxb8x6wZlfXCrNGKQJFyqAXwt5hPDpH40VQK8uKL7W28kcnuhtv0kBMOKEQCYTKY78ZgXA6AuBuYJJkiLDzJ/uX+ISl/h94Be4RqBgAJF5JwAAAABJRU5ErkJggg==",
+                "tools": [
+                    "web_search"
+                ],
+                "status": {}
+            },
+            {
+                "id": "RequirementsTool",
+                "name": "Gather Requirements",
+                "description": "Asks clarifying questions to fully understand user needs before starting a task, ensuring precise and efficient solutions",
+                "author": "ZENCODER_CLIENT",
+                "icon": "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAASaSURBVHgB7Zu9cttGEMd3jxQJ06KsIiysSpVfwA8QpchMRMkctXJjp5HqWOkt97EnrdhEVdRmJFkuUkR+AE96N05lFcqMMwRNUSRxm1vI8AAwyTuAh5FM4leQwAHEYf+43fvgAiAnJ2eWQbAMNb6ptvvtTQK4jwj3wQIS4C0SHSy8ujwCy1gV4OP3lSVvzttDwLuQAQR0VigWtm8fdt6DJQRYJEvjGb62N/D2zlUrA0tYE6C1Wn6QpfEBXIfjtTfBEqlcgP3c7bsrhKh8nHw/FzHjld8e94rzz2uH/7owAefKrUpzcks9qfX4savYgMod5Ou08SGxAO66swIePQXEsc2wWxSNmiVfPW9A1Rk4f407h+OD+mgmFSKRC6hmvqNk/0Vn/BWViZ585EoXFW197BqI+NRddbYgAcYC8IVVBca+Vxq0dz42KkswIexuA+UCxj9A2PIflPHpBvgBTqkbLiMCFwUcCBBvoABn0pPrqgkmUj8tROLZwqvOUbdevncJ+HBYfFCP9ufqcfdUdy0zAerlo3CEl4BnvSJuh32c/bQ0uPW7AMq0J+C675xcPAiXXQVK2ovUrR5Qd26+oQvCWhcY1r3FjWdqh+D2+rjNNwgZEQgfL6/92XnPdbPRnwsRqmXpruiuqY8BQnwbvQk4HhXd+Ub46XATlQhvwRKE8EYZ1OwVbz8cV7ey5iBS6EXvfRhF3QkIFAlkRRTabob9U31ZH7erznXsUY5Hkh9RsI/yHmjQtwAJkebfUQEPbiidQifS6ghQ2wvpBVC+FN6tWZyI2IbjECTE6mToayQXAGacXACYcXIBYMbJBYAZRzsXSEprtaJmj94Ts1Ujc66WvArNT/MMa9hvAeht2TbevywveYF8ApaxLoBapZ2HjJCIbbCMdQEIxIssFkX8JTjCJljGegzIbi0gG/JuEKaN0LqgiStOnQBBDDKNGdZjwHWTNAblMQBmnHwuAJZJOhfIaow/tK6NxUW3192YK8HprT+6/3DZtc8Fshrjx7nYcJbd3sXfSobf+j165+c5wA2ZC2Qxxg/DxiujOcFiOSgjCY/4+9rnAlmN8QOGGf+J1/wx1XOBUcaruPPszsnlPm9PbS8w3vjebrA/lQKYGs9MnQBJjGdunADtNedRa630oVUvv+PtJL9NajyjF4CifznbTFMdhiTaBcJFtbmstvdNRUhjPKMVgJBifXQnUwHUQGIxvGsiQlrjGa0AiBhpARUPss0HJvFTvGicCJMYz2gFkBRNdpIgrbwDMIqFk+6+kv1H+OI+aN+tlyK5ipMaz2gFEAJOo3cCmzYyQMcxSgQC3A1EsGE8o02U9BOV+85hOFcoixcXhtGqO4958hIvR4Rf1RB6AyY03r+WyUn+zImTpGNwzqCfNleAs6zEGCVCnDTGM8bp8q218o6atFh7USHAZD1AJ0Ja4xnjgdDCy8vnnK0JljFZD+CYgAK/U13kf/FjkxjPJBoJVl92m34arOW/vkzWAzjzWxBFRJjUeCb1W2O89EUo+dW4u0S0JFK+L0T+SFO8MF0S+/CDs6x6psfcO5mkw+fk5OSM439mq0xXi3gaPgAAAABJRU5ErkJggg==",
+                "tools": [
+                    "RequirementsTool"
+                ],
+                "status": {}
+            },
+            {
+                "id": "ExecuteShellCommand",
+                "name": "Execute Shell Command",
+                "description": "Run shell commands within the project's root directory",
+                "author": "ZENCODER_CLIENT",
+                "icon": "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAP1SURBVHgB7ZoxUxNBFMff27tIVOJYmAIqq/gB/AI2zCgw9GLh2MTa8QMAH4AZWlJhIfYMoDM2fAE+gGmkIgXOyBCQRHL7fC+C3h2BvQsb2Az7a5Jdbsnuf9+73Z39A3g8Ho/H47mtIFwBmnlUOuocTEegniDBGCGNS70CHIMBoIEa8omEu6CwDlrXg0KwfX/t1y70SV8CHE3cG49CPYcIT8EBNMB6GKpaP0LkFuDw+d2XhLoKiCVwCYImR0Zt9MvxpzzNcgnQfFHkgUMVXIagVvrcqmV9PLMA3ZlX9P7c7yFsK8It/ltDKVWXuqvk5GUczdwbDzrRaIRBiYgqEcCsAjr3vkGNi1kjIZMAkvM6jD7Gw5445BRyyG3mCznbHE7yxBBJZP5PSelbQb3KMhEKMtApJHNeBs+v4rc3PXhB+lDgvsig/1WyGNGJnsvS3iiAzD4/NJ1oxDP/YLNdB0cocl+Q+xSvkxVqj5dpU1ujAFEYJZY6DdhwYebTSJ84MrfjdXc7R9OmduYUUFCJFwOAVXAUjsyteDkCemJsY3oANCYE4FBzJvTTyEoUL3MaGHekZgFOt7dnRBQ0wVFabZWYHEVkQYAU7TA67FV/OFV8fTB15+fB5Mh3+Q5DglEATB1syhesrZponndFD/nrY/6+chMilL8m+0aA46Y2uSPgQpAexos3JUJe7AlA6l26ahhEsCbAg83WCofBm3S96yLYiwAYThGsCiAMmwjWBRAuEWEJHGMgAnT/MfIqlIIr9sExBiKAhLqEfLqe9xQL4BjWBbho8JISf1PDLawKMGyDF0KwRL+D77YDvXS6jc7DDh9/50c3Wh/gCliLgO5Z4BzmmY+dIfLy2MaqMrCzQOawP9cuOzZWFatnAe7QDl+P7efK+dN2kBP5HRurirV3wOmAVyAn/bazxcA2QsOCFwBuOV4AuOV4AUwPECQvG/b4ihocZW8i2Tc+kdu5HR4WSoVgFHJiFkAMSTGKWlfAUSKMErfBGrFhamNOAYTkfZsejAPMBuIaSdaY7zGNAgSA3+JlPoE9A0fhY/VsssKCAMfh8Xq8LMYD8QuBY0if0td47ULSL9ALowDlNWimjQd8Equ2JkvOvAtakyOVrnUvhngHy7Y8Qu2OWkh7cE7oZNmFSJA+nBAspz1Mv0OVySqX3SYnbizoYZPjfYICWkUM6wEFzYivzwdpk5NPzSsRaj2mST3r5VblVFjMauPJZ5ScKlZ5xG4bJRFqpY0BGCXP6OnLc4B+fYt9maVly3mnoKtp+9xNIW7VdqAWytdhlo4jQoyEnINKNiBU4ci4Hrs84i7PeEP2KMfhfX7b/3DWt+TxeDwej8dd/gBP3cjdQfST7wAAAABJRU5ErkJggg==",
+                "tools": [
+                    "ExecuteShellCommand"
+                ],
+                "status": {}
+            },
+            {
+                "id": "fetch_webpage",
+                "name": "Fetch Webpage Content",
+                "description": "Retrieve webpage content from a specific URL",
+                "author": "ZENCODER_MCP_BACKEND",
+                "icon": "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAQTSURBVHgB7Zq/ThtBEMZn9s7BAYwo4gIqKvMAeQEapAQQfUgRpXHqKA8APAASLa5IEdIjIJHS8AI8QNyEChdECsIQ7Ni3kxkC5O4w7Nm+PZ/gfg2+5RZ2vv036/0AMjIyMjIyMh4rCH1Ai88K5+3TBQ/UNBJMENKklCvACbCABqrJTyQ8AoVV0Lrq5JyDke3fR9AjPQlwPjs86bl6GRGeQwrQADuuqyq9CNG1AGcvnr4i1GVALECaIKjzyKiMfr343E21rgSov8xz4FCGNENQKXxpVKK+HlmAy55X9OHW/0M4UIT7/LuaUqoqZf3Myfs4XxyedNreqIdOgYhKHsCSArq13qDGtagjIZIAMue1633yD3viIaeQh9xed0Mubs7muGOIZGT+n5LStpx6HaUjFESgnQvOeQmel+J3gw5ekDbkuC0S9E0hi+G19HKU+kYBpPf5pYVAJe75sb1mFVJCntuC3CZ/mexQx7xNm+oaBfBcL7DVacBaHD1/Np9/czr/5Nfp3NAP+Qx9Im3ikXngL3vaPl8w1TNPAQUl/6MDsAUxoIlWeAUd549T/HkdYoBH5r7/2QOaNtYxvQAaAwLwUItr6E/5Po9DDMhO5H/maWDMSM0CXKW313jk1CGlNJoq0DmKKAYBQjRd7wweEEYBMHSwKVpKcuKg+C3YNgKcNNXpegQ8NDIB4JFjVYBek524k6T7sCpAKNnZjBKMvCPvxp0k3YXdKYAUSHBMItwE74MATsAidgUg9T5cdJcInYIXeBteBYtYFWBsr7HJIbwNl3cKtFOZ1P33N+xhfRe4SwQz9oMXEtkGuxchmeCFxPKA6CIkF7yQaCJkFiHZ4IXEM8G7RUg+eGEgqfC1CLzHH/J12smgghdcGBBXAW/CgMkOQ/DIefQCWFsDLnN70OtXp7p+OOSvu1dGdxsfwQLWRoDvKNwvVo/E9qZA6CjcDzaPxEYBCIKXDcd8RQ1R4KOw7PPQJ5InRD0SH88G24ZAxm+wra0Bg9jnCzlntCWGmS4wTwExJPnIa12ClOKhF7gN1og1Ux3zFEAI3rdpOw6wOBDXSLDEfI9pFMAB/O5/5hV5BlIKb7tLwYIYBLhwL3b8z2I8EL8QpAxpU/gar5kL+gU6YRSguA31sPGAV+ZyY66QmrWgMTdUurTu+RDvYDEuj1CzrVbDHpwWtTbSMBKkDS2CjbCH6Y+rIlnlotvkxI0FHWxynCcooC1Et+qQU/f4+tymTU5+at6JUOsJTWqmk1uVp8JaVBtPd0bJ+XyZI063URKhUti1YJS8pqMvLwX06lvsySwtKeeTnC6H7XODQtyqTUetFpMwS/sRIYZcnoNKEhAq8chIxi6PeMQ9XpMc5cId4dX+Z2p9SxkZGRkZGRnp5S+lzdnY4AK96gAAAABJRU5ErkJggg==",
+                "tools": [
+                    "fetch_webpage"
+                ],
+                "status": {}
+            }
+        ],
+        "author": "d90c1cd8-58c3-4a47-a924-e7db8374bfa3",
+        "isSharedWithOrganization": false
+    },
+    "isUnitTestsAgent": false
+}
+}

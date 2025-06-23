@@ -38,9 +38,7 @@ export default async function RootLayout({ children, params }: Props) {
 	const resolvedParams = await params;
 	const locale = resolvedParams.locale;
 
-	if (typeof locale !== 'string') {
-		throw new Error('Invalid locale parameter');
-	}
+
 
 	unstable_setRequestLocale(locale);
 	const messages = await getMessages({ locale });

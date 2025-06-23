@@ -1,0 +1,383 @@
+{
+    "checksum": "d23d18946136d4012c2a783207502c81ac86882b546e61ae3dbc39d203d20e63",
+    "data": {
+    "id": "bcd227de-5a97-4668-8411-65b76068c70b",
+    "createdAt": 1750677529743,
+    "updatedAt": 1750677567627,
+    "title": "Next.js Locale Parameter Update",
+    "messages": [
+        {
+            "id": "5827770d-c74d-457b-b44f-baef1ef4145c",
+            "role": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "samanyu@Samanyus-MacBook-Pro supadupa-website-clone-master % pnpm dev"
+                },
+                {
+                    "type": "text",
+                    "text": "> AICERA@0.1.0 dev /Users/samanyu/Desktop/supadupa-website-clone-master"
+                },
+                {
+                    "type": "text",
+                    "text": "> next dev"
+                },
+                {
+                    "type": "text",
+                    "text": "   ▲ Next.js 15.3.2"
+                },
+                {
+                    "type": "text",
+                    "text": "   - Local:        http://localhost:3000"
+                },
+                {
+                    "type": "text",
+                    "text": "   - Network:      http://192.168.29.51:3000"
+                },
+                {
+                    "type": "text",
+                    "text": " ✓ Starting..."
+                },
+                {
+                    "type": "text",
+                    "text": " ✓ Ready in 1612ms"
+                },
+                {
+                    "type": "text",
+                    "text": " ✓ Compiled /middleware in 163ms (138 modules)"
+                },
+                {
+                    "type": "text",
+                    "text": " ○ Compiling /[locale] ..."
+                },
+                {
+                    "type": "text",
+                    "text": " ✓ Compiled /[locale] in 2.4s (1856 modules)"
+                },
+                {
+                    "type": "text",
+                    "text": " ✓ Compiled in 129ms (829 modules)"
+                },
+                {
+                    "type": "text",
+                    "text": "The `locale` parameter in `getRequestConfig` is deprecated, please switch to `await requestLocale`. See https://next-intl.dev/blog/next-intl-3-22#await-request-locale"
+                },
+                {
+                    "type": "text",
+                    "text": " GET /en 200 in 3189ms"
+                },
+                {
+                    "type": "text",
+                    "text": " ✓ Compiled /favicon.ico in 281ms (1043 modules)"
+                },
+                {
+                    "type": "text",
+                    "text": " GET /favicon.ico 200 in 369ms"
+                },
+                {
+                    "type": "text",
+                    "text": "The `locale` parameter in `getRequestConfig` is deprecated, please switch to `await requestLocale`. See https://next-intl.dev/blog/next-intl-3-22#await-request-locale"
+                },
+                {
+                    "type": "text",
+                    "text": " GET /sw.js 404 in 257ms"
+                },
+                {
+                    "type": "text",
+                    "text": " GET /heroVideo.webm 404 in 30ms"
+                }
+            ],
+            "context": {
+                "currentFile": {
+                    "path": "app/[locale]/layout.tsx",
+                    "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/app/[locale]/layout.tsx",
+                    "sources": [
+                        "opened_tab"
+                    ],
+                    "content": "import \"@/styles/globals.css\";\nimport type { Metadata, Viewport } from \"next\";\nimport { getMessages } from \"next-intl/server\";\nimport { NextIntlClientProvider } from \"next-intl\";\nimport { unstable_setRequestLocale } from 'next-intl/server';\nimport type { ReactNode } from 'react';\n\nexport const viewport: Viewport = {\n\twidth: \"device-width\",\n\tinitialScale: 1,\n\tthemeColor: \"#ffffff\"\n};\n\nexport const metadata: Metadata = {\n\ttitle: \"AICERA - Smarter Tech. Sharper Minds\",\n\tdescription: \"AICERA website by Samanyu B Rao\",\n\trobots: {\n\t\tindex: true,\n\t\tfollow: true,\n\t},\n\topenGraph: {\n\t\ttitle: \"AICERA - Smarter Tech. Sharper Minds\",\n\t\tdescription: \"AICERA website by Samanyu B Rao\",\n\t\ttype: \"website\",\n\t},\n};\n\nexport async function generateStaticParams() {\n\treturn [{ locale: 'en' }, { locale: 'nl' }];\n}\n\ntype Props = {\n\tchildren: ReactNode;\n\tparams: Promise<{ locale: string }>;\n};\n\nexport default async function RootLayout({ children, params }: Props) {\n\tconst resolvedParams = await params;\n\tconst locale = resolvedParams.locale;\n\n\tif (typeof locale !== 'string') {\n\t\tthrow new Error('Invalid locale parameter');\n\t}\n\n\tunstable_setRequestLocale(locale);\n\tconst messages = await getMessages({ locale });\n\n\treturn (\n\t\t<html lang={locale}>\n\t\t<body suppressHydrationWarning>\n\t\t<NextIntlClientProvider messages={messages} locale={locale}>\n\t\t\t{children}\n\t\t</NextIntlClientProvider>\n\t\t</body>\n\t\t</html>\n\t);\n}",
+                    "language": "typescript jsx"
+                },
+                "codebaseEnabled": true
+            },
+            "createdAt": 1750677529744,
+            "isInternal": false,
+            "rawContent": {
+                "type": "doc",
+                "content": [
+                    {
+                        "type": "paragraph",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": "samanyu@Samanyus-MacBook-Pro supadupa-website-clone-master % pnpm dev"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "paragraph",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": "> AICERA@0.1.0 dev /Users/samanyu/Desktop/supadupa-website-clone-master"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "paragraph",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": "> next dev"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "paragraph",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": "   ▲ Next.js 15.3.2"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "paragraph",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": "   - Local:        http://localhost:3000"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "paragraph",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": "   - Network:      http://192.168.29.51:3000"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "paragraph",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": " ✓ Starting..."
+                            }
+                        ]
+                    },
+                    {
+                        "type": "paragraph",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": " ✓ Ready in 1612ms"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "paragraph",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": " ✓ Compiled /middleware in 163ms (138 modules)"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "paragraph",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": " ○ Compiling /[locale] ..."
+                            }
+                        ]
+                    },
+                    {
+                        "type": "paragraph",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": " ✓ Compiled /[locale] in 2.4s (1856 modules)"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "paragraph",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": " ✓ Compiled in 129ms (829 modules)"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "paragraph",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": "The `locale` parameter in `getRequestConfig` is deprecated, please switch to `await requestLocale`. See https://next-intl.dev/blog/next-intl-3-22#await-request-locale"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "paragraph",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": " GET /en 200 in 3189ms"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "paragraph",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": " ✓ Compiled /favicon.ico in 281ms (1043 modules)"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "paragraph",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": " GET /favicon.ico 200 in 369ms"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "paragraph",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": "The `locale` parameter in `getRequestConfig` is deprecated, please switch to `await requestLocale`. See https://next-intl.dev/blog/next-intl-3-22#await-request-locale"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "paragraph",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": " GET /sw.js 404 in 257ms"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "paragraph",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": " GET /heroVideo.webm 404 in 30ms"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "paragraph"
+                    }
+                ]
+            }
+        },
+        {
+            "id": "07acde95-e8d3-42f8-86e4-367431e62f56",
+            "role": "assistant",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "I can see you're getting a deprecation warning about the `locale` parameter in `getRequestConfig`. The warning suggests switching to `await requestLocale`. Let me help you fix this issue.\n\nFirst, let me search for the configuration file where this deprecation is occurring:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01MwXQri3j5W1XBtYtwaXsPN",
+                    "title": "File search",
+                    "statusText": "Done",
+                    "status": "SUCCESS",
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Let me check the i18n configuration file:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01Y47LEf5Qxq7MYKECqEZL1r",
+                    "statusText": "Viewed file",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "i18n/request.ts",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/i18n/request.ts"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Now I can see the issue! The deprecation warning is coming from this file where you're using the `locale` parameter in the `getRequestConfig` function. According to the warning, you need to switch to `await requestLocale`. Let me also check what imports are available:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_018LbHmncjPBxMyAD6cnt2Kb",
+                    "title": "Web search",
+                    "statusText": "Done",
+                    "status": "SUCCESS",
+                    "isHidden": false
+                },
+                {
+                    "type": "text",
+                    "text": "Perfect! Now I understand the migration. I need to update the `getRequestConfig` to use `await requestLocale()` instead of the `locale` parameter. Let me fix this:"
+                },
+                {
+                    "type": "toolCall",
+                    "toolCallId": "toolu_01XqcMm4vupzFYuWFMmyKVyi",
+                    "statusText": "Change generated",
+                    "status": "SUCCESS",
+                    "context": {
+                        "files": [
+                            {
+                                "path": "i18n/request.ts",
+                                "fsPath": "/Users/samanyu/Desktop/supadupa-website-clone-master/i18n/request.ts"
+                            }
+                        ]
+                    },
+                    "isHidden": false
+                },
+                {
+                    "type": "codeHunk",
+                    "lineBasedDiff": "--- i18n/request.ts\n+++ i18n/request.ts\n@@ -6,7 +6,10 @@\n     return SUPPORTED_LOCALES.includes(locale as SupportedLocale);\n }\n \n-export default getRequestConfig(async ({ locale }) => {\n+export default getRequestConfig(async ({ requestLocale }) => {\n+    // Get the locale from the request\n+    const locale = await requestLocale();\n+    \n     // Validate that the incoming `locale` parameter is valid\n     if (!isValidLocale(locale)) {\n         notFound();",
+                    "refToolCallId": "toolu_01XqcMm4vupzFYuWFMmyKVyi"
+                },
+                {
+                    "type": "text",
+                    "text": "Perfect! I've updated your i18n configuration to use the new `await requestLocale()` syntax instead of the deprecated `locale` parameter. Here's what I changed:\n\n1. **Changed the parameter**: Instead of `{ locale }`, the function now receives `{ requestLocale }`\n2. **Added await call**: The locale is now obtained by calling `const locale = await requestLocale()`\n3. **Updated comment**: Updated the comment to reflect the new approach\n\nThis change addresses the deprecation warning you were seeing. The functionality remains the same - it still validates the locale and loads the appropriate messages, but now uses the new API that's compatible with Next.js 15.\n\nYou can now restart your development server and the deprecation warning should be gone. The rest of your application should continue to work exactly as before since the locale validation and message loading logic remains unchanged."
+                },
+                {
+                    "type": "codePatch",
+                    "diffs": [
+                        {
+                            "path": "i18n/request.ts",
+                            "patch": "@@ -340,17 +340,24 @@\n sync (%7B \n-l\n+requestL\n ocale %7D)\n@@ -362,16 +362,102 @@\n %7D) =%3E %7B%0A\n+    // Get the locale from the request%0A    const locale = await requestLocale();%0A    %0A\n     // V\n",
+                            "isNew": false,
+                            "isApplied": true
+                        }
+                    ]
+                }
+            ],
+            "context": {
+                "author": "Coding Agent",
+                "operationId": "e6feb77a-804d-447b-a66f-10edae674a14"
+            },
+            "createdAt": 1750677531907,
+            "isInternal": false
+        }
+    ],
+    "isAgent": true,
+    "isNameGenerated": true,
+    "autoApply": false
+}
+}

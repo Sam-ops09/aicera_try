@@ -2,13 +2,13 @@ import { MotionValue } from "framer-motion";
 import { StaticImageData } from "next/image";
 
 export type TtextHoverProps = {
-   titile1: string;
-   titile2: string;
+   title1: string;
+   title2: string;
 };
 
 export type TmarqueeProps = {
-   titile1: string;
-   titile2: string;
+   title1: string;
+   title2: string;
    className: string;
 };
 
@@ -42,3 +42,9 @@ export type TRoundedProps = {
    className?: string;
    backgroundColor: string;
 };
+
+export interface SlideData {
+   titleKey: string;
+   headingKey: string;
+   paraKey: string;
+}

@@ -30,8 +30,8 @@ export default function AboutUs() {
             {/*</motion.div>*/}
             <Marquee
                 className="text-[#0D1B2A]"
-                titile1="About Us"
-                titile2="About Us"
+                title1="About Us"
+                title2="About Us"
             />
 
             <div className="w-full flex items-center justify-center pt-10 pb-10">

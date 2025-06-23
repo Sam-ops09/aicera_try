@@ -15,8 +15,8 @@ export default function Whatwedo() {
 			<div className="py-8 xm:py-4 sm:py-6">
 				<Marquee
 					className="text-[#0D1B2A]"
-					titile1="What we do"
-					titile2="What we do"
+					title1="What we do"
+					title2="What we do"
 				/>
 				<div className="w-full flex items-center justify-center pt-8 xm:pt-4 sm:pt-6">
 					<div className="w-[80%] xm:w-full sm:w-full xm:px-4 sm:px-6">

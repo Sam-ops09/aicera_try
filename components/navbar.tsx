@@ -3,27 +3,26 @@
 import Link from "next/link";
 import Image from "next/image";
 import { links } from "@/constants";
-import TextHover from "./text-hover";
 import { navVariants } from "@/motion";
-import { useRouter } from "next/navigation";
 import { blackCircle, logo } from "@/public";
-import { useState, useTransition } from "react";
-import { useLocale, useTranslations } from "next-intl";
+import { useState, useCallback } from "react";
+import { useTranslations } from "next-intl";
 import { AnimatePresence, motion } from "framer-motion";
+import {TextHover} from "@/components/index";
 
 export default function Navbar() {
     const t = useTranslations("navbarContent");
     const [active, setActive] = useState(false);
-    const [isPending, startTransition] = useTransition();
-    const router = useRouter();
-    const currentLocale = useLocale();
 
-    const onSelectChange = () => {
-        const nextLocale = currentLocale === "en" ? "nl" : "en";
-        startTransition(() => {
-            router.replace(`/${nextLocale}`);
-        });
-    };
+    // Memoized toggle function for better performance
+    const toggleMenu = useCallback(() => {
+        setActive(prev => !prev);
+    }, []);
+
+    // Close menu when clicking on a link
+    const handleLinkClick = useCallback(() => {
+        setActive(false);
+    }, []);
 
     return (
         <>
@@ -78,7 +77,7 @@ export default function Navbar() {
                                 className="group-hover:rotate-[90deg] transition-all duration-300 ease-linear xs:hidden xm:hidden sm:hidden md:block xs:w-[16px] xs:h-[16px] xm:w-[18px] xm:h-[18px]"
                             />
                             <span className="xs:text-[12px] xm:text-[14px] sm:text-[15px]">
-                                <TextHover titile1="Menu" titile2="Menu" />
+                                <TextHover title1="Menu" title2="Menu" />
                             </span>
                         </button>
 

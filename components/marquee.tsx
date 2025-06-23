@@ -3,15 +3,15 @@ import { useRef, Fragment } from "react";
 import { useScroll, useTransform, motion, useReducedMotion } from "framer-motion";
 
 interface MarqueeProps {
-	titile1: string;
-	titile2: string;
+	title1: string;
+	title2: string;
 	className?: string;
 	speed?: "slow" | "medium" | "fast";
 }
 
 export default function Marquee({
-	titile1,
-	titile2,
+	title1,
+	title2,
 	className = "",
 	speed = "medium",
 }: MarqueeProps) {
@@ -61,7 +61,7 @@ export default function Marquee({
 						<h2
 							className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl ${className} font-bold leading-none tracking-tight flex-shrink-0`}
 						>
-							{titile1}
+							{title1}
 						</h2>
 						<motion.img
 							style={rotateProps}
@@ -73,7 +73,7 @@ export default function Marquee({
 						<h2
 							className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl ${className} font-bold leading-none tracking-tight flex-shrink-0`}
 						>
-							{titile2}
+							{title2}
 						</h2>
 					</Fragment>
 				))}
