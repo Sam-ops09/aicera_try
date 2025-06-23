@@ -4,6 +4,7 @@ import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { unstable_setRequestLocale } from 'next-intl/server';
 import type { ReactNode } from 'react';
+import { Analytics } from "@vercel/analytics/next"
 
 export const viewport: Viewport = {
 	width: "device-width",
@@ -47,6 +48,7 @@ export default async function RootLayout({ children, params }: Props) {
 		<html lang={locale}>
 		<body suppressHydrationWarning>
 		<NextIntlClientProvider messages={messages} locale={locale}>
+			<Analytics/>
 			{children}
 		</NextIntlClientProvider>
 		</body>
